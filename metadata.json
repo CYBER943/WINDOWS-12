@@ -1,0 +1,6 @@
+{
+  "name": "Windows 12 Web Concept",
+  "description": "An ultra-realistic fan-made Windows 12 desktop experience concept.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
