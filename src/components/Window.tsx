@@ -1,20 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useDragControls } from 'motion/react';
 import { useStore, APPS } from '../store/useStore';
-import { 
-  X, 
-  Minus, 
-  Maximize, 
-  Minimize2, 
-  FolderOpen, 
-  Globe, 
-  FileText, 
-  Calculator as CalculatorIcon, 
-  Settings as SettingsIcon,
-  Terminal,
-  Palette,
-  Bot
-} from 'lucide-react';
+import { X, Minus, Maximize, Minimize2 } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 import { cn } from '../lib/utils';
 import { NotepadApp } from './apps/NotepadApp';
 import { CalculatorApp } from './apps/CalculatorApp';
@@ -24,6 +12,8 @@ import { ExplorerApp } from './apps/ExplorerApp';
 import { TerminalApp } from './apps/TerminalApp';
 import { PaintApp } from './apps/PaintApp';
 import { AssistantApp } from './apps/AssistantApp';
+import { TaskManagerApp } from './apps/TaskManagerApp';
+import { CodeEditorApp } from './apps/CodeEditorApp';
 
 const AppComponents: Record<string, React.FC<{ windowId: string }>> = {
   NotepadApp,
@@ -33,11 +23,9 @@ const AppComponents: Record<string, React.FC<{ windowId: string }>> = {
   ExplorerApp,
   TerminalApp,
   PaintApp,
-  AssistantApp
-};
-
-const Icons: Record<string, React.ElementType> = {
-  FolderOpen, Globe, FileText, Calculator: CalculatorIcon, Settings: SettingsIcon, Terminal, Palette, Bot
+  AssistantApp,
+  TaskManagerApp,
+  CodeEditorApp
 };
 
 interface WindowProps {
@@ -69,7 +57,31 @@ export const Window: React.FC<WindowProps> = ({ id }) => {
   if (!app) return null;
 
   const AppComponent = AppComponents[app.component];
-  const Icon = Icons[app.icon];
+  const Icon = (LucideIcons as Record<string, React.ElementType>)[app.icon];
+
+  const handleDragEnd = (e: any, info: any) => {
+    const newX = windowState.x + info.offset.x;
+    const newY = windowState.y + info.offset.y;
+    
+    // Snap zones
+    const threshold = 15;
+    if (info.point.x < threshold) {
+      // Snap Left
+      updateWindowPosition(id, 0, 0);
+      updateWindowSize(id, window.innerWidth / 2, window.innerHeight - 48);
+      if (windowState.isMaximized) maximizeWindow(id);
+    } else if (info.point.x > window.innerWidth - threshold) {
+      // Snap Right
+      updateWindowPosition(id, window.innerWidth / 2, 0);
+      updateWindowSize(id, window.innerWidth / 2, window.innerHeight - 48);
+      if (windowState.isMaximized) maximizeWindow(id);
+    } else if (info.point.y < threshold) {
+      // Snap Top (Maximize)
+      if (!windowState.isMaximized) maximizeWindow(id);
+    } else {
+      updateWindowPosition(id, newX, newY);
+    }
+  };
 
   return (
     <motion.div
@@ -99,9 +111,7 @@ export const Window: React.FC<WindowProps> = ({ id }) => {
       dragConstraints={{ top: 0, left: 0, right: window.innerWidth - windowState.width, bottom: window.innerHeight - windowState.height - 48 }}
       dragElastic={0}
       dragMomentum={false}
-      onDragEnd={(e, info) => {
-        updateWindowPosition(id, windowState.x + info.offset.x, windowState.y + info.offset.y);
-      }}
+      onDragEnd={handleDragEnd}
     >
       {/* Title Bar */}
       <div 

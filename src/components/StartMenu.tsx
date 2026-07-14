@@ -1,20 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useStore, APPS } from '../store/useStore';
 import { motion, AnimatePresence } from 'motion/react';
-import { Power, Settings as SettingsIcon, User, Search, FolderOpen, Globe, FileText, Calculator, Terminal, Palette, Bot } from 'lucide-react';
+import { Power, Settings as SettingsIcon, User, Search, FileText } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 import { cn } from '../lib/utils';
 import { format } from 'date-fns';
-
-const Icons: Record<string, React.ElementType> = {
-  FolderOpen,
-  Globe,
-  FileText,
-  Calculator,
-  Settings: SettingsIcon,
-  Terminal,
-  Palette,
-  Bot,
-};
 
 export const StartMenu: React.FC = () => {
   const { startMenuOpen, openApp, toggleStartMenu } = useStore();
@@ -56,7 +46,7 @@ export const StartMenu: React.FC = () => {
         </div>
         <div className="grid grid-cols-6 gap-4">
           {filteredApps.map(app => {
-            const Icon = Icons[app.icon];
+            const Icon = (LucideIcons as Record<string, React.ElementType>)[app.icon];
             return (
               <button
                 key={app.id}

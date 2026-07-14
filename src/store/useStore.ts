@@ -60,6 +60,22 @@ export const APPS: AppMetadata[] = [
     defaultHeight: 600,
   },
   {
+    id: 'taskmanager',
+    name: 'Task Manager',
+    icon: 'Activity',
+    component: 'TaskManagerApp',
+    defaultWidth: 650,
+    defaultHeight: 500,
+  },
+  {
+    id: 'codeeditor',
+    name: 'Code Editor',
+    icon: 'Code',
+    component: 'CodeEditorApp',
+    defaultWidth: 800,
+    defaultHeight: 600,
+  },
+  {
     id: 'settings',
     name: 'Settings',
     icon: 'Settings',

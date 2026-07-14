@@ -2,19 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useStore, APPS } from '../store/useStore';
 import { format } from 'date-fns';
 import { cn } from '../lib/utils';
-import { Wifi, Volume2, Battery, ChevronUp, FolderOpen, Globe, FileText, Calculator, Settings as SettingsIcon, Cloud, Terminal, Palette, Bot } from 'lucide-react';
+import { Wifi, Volume2, Battery, ChevronUp, Cloud } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 import { motion } from 'motion/react';
-
-const Icons: Record<string, React.ElementType> = {
-  FolderOpen,
-  Globe,
-  FileText,
-  Calculator,
-  Settings: SettingsIcon,
-  Terminal,
-  Palette,
-  Bot,
-};
 
 export const Taskbar: React.FC = () => {
   const { windows, openApp, toggleStartMenu, startMenuOpen, actionCenterOpen, toggleActionCenter, widgetsOpen, toggleWidgets, focusWindow } = useStore();
@@ -74,7 +64,7 @@ export const Taskbar: React.FC = () => {
 
         {/* Taskbar Apps */}
         {allTaskbarApps.map(app => {
-          const Icon = Icons[app.icon];
+          const Icon = (LucideIcons as Record<string, React.ElementType>)[app.icon];
           const isOpen = openAppIds.includes(app.id);
           const activeWindow = windows.find(w => w.appId === app.id && w.isFocused);
 
