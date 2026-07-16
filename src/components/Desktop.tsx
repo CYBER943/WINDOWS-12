@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useStore, APPS } from '../store/useStore';
 import { Window } from './Window';
 import { motion, AnimatePresence } from 'motion/react';
-import { Folder, FileText } from 'lucide-react';
+import { Folder, FileText, Gamepad2 } from 'lucide-react';
 import { cn } from '../lib/utils';
 
 export const Desktop: React.FC = () => {
@@ -13,6 +13,7 @@ export const Desktop: React.FC = () => {
     { id: 'recycle', name: 'Recycle Bin', icon: Folder },
     { id: 'explorer', name: 'File Explorer', icon: Folder, appId: 'explorer' },
     { id: 'readme', name: 'readme.txt', icon: FileText, appId: 'notepad' },
+    { id: 'xbox', name: 'Xbox', icon: Gamepad2, appId: 'xbox' },
   ];
 
   return (

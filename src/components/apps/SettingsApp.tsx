@@ -1,6 +1,6 @@
 import React from 'react';
 import { useStore } from '../../store/useStore';
-import { Monitor, Paintbrush, Moon, Sun } from 'lucide-react';
+import { Monitor, Paintbrush, Moon, Sun, Bot, Shield } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
 const wallpapers = [
@@ -19,20 +19,28 @@ export const SettingsApp: React.FC<{ windowId: string }> = () => {
       <div className="w-64 border-r border-gray-200 dark:border-white/10 p-4">
         <h2 className="font-semibold text-xl mb-6">Settings</h2>
         <div className="space-y-1">
+          <button className="w-full flex items-center gap-3 px-3 py-2 rounded-md hover:bg-black/5 dark:hover:bg-white/5 text-sm font-medium transition-colors">
+            <Monitor size={18} />
+            System
+          </button>
           <button className="w-full flex items-center gap-3 px-3 py-2 rounded-md bg-black/5 dark:bg-white/10 text-sm font-medium">
             <Paintbrush size={18} className="text-blue-500" />
             Personalization
           </button>
           <button className="w-full flex items-center gap-3 px-3 py-2 rounded-md hover:bg-black/5 dark:hover:bg-white/5 text-sm font-medium transition-colors">
-            <Monitor size={18} />
-            System
+            <Bot size={18} />
+            AI & Copilot
+          </button>
+          <button className="w-full flex items-center gap-3 px-3 py-2 rounded-md hover:bg-black/5 dark:hover:bg-white/5 text-sm font-medium transition-colors">
+            <Shield size={18} />
+            Privacy & Security
           </button>
         </div>
       </div>
 
       {/* Content */}
       <div className="flex-1 p-8 overflow-y-auto">
-        <h3 className="text-2xl font-semibold mb-8">Personalization</h3>
+        <h3 className="text-3xl font-light mb-8">Personalization</h3>
         
         {/* Theme Toggle */}
         <div className="mb-8 p-6 bg-white dark:bg-white/5 rounded-xl border border-gray-200 dark:border-white/10 shadow-sm">

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence, useDragControls } from 'motion/react';
 import { useStore, APPS } from '../store/useStore';
 import { X, Minus, Maximize, Minimize2 } from 'lucide-react';
@@ -14,6 +14,8 @@ import { PaintApp } from './apps/PaintApp';
 import { AssistantApp } from './apps/AssistantApp';
 import { TaskManagerApp } from './apps/TaskManagerApp';
 import { CodeEditorApp } from './apps/CodeEditorApp';
+import { SecurityApp } from './apps/SecurityApp';
+import { XboxApp } from './apps/XboxApp';
 
 const AppComponents: Record<string, React.FC<{ windowId: string }>> = {
   NotepadApp,
@@ -25,7 +27,9 @@ const AppComponents: Record<string, React.FC<{ windowId: string }>> = {
   PaintApp,
   AssistantApp,
   TaskManagerApp,
-  CodeEditorApp
+  CodeEditorApp,
+  SecurityApp,
+  XboxApp
 };
 
 interface WindowProps {
@@ -47,6 +51,8 @@ export const Window: React.FC<WindowProps> = ({ id }) => {
   const dragConstraintsRef = useRef<HTMLDivElement | null>(null);
   const dragControls = useDragControls();
 
+  const [isDragging, setIsDragging] = useState(false);
+  
   useEffect(() => {
     dragConstraintsRef.current = document.getElementById('desktop-area') as HTMLDivElement;
   }, []);
@@ -59,7 +65,10 @@ export const Window: React.FC<WindowProps> = ({ id }) => {
   const AppComponent = AppComponents[app.component];
   const Icon = (LucideIcons as Record<string, React.ElementType>)[app.icon];
 
+  const handleDragStart = () => setIsDragging(true);
+
   const handleDragEnd = (e: any, info: any) => {
+    setIsDragging(false);
     const newX = windowState.x + info.offset.x;
     const newY = windowState.y + info.offset.y;
     
@@ -111,6 +120,7 @@ export const Window: React.FC<WindowProps> = ({ id }) => {
       dragConstraints={{ top: 0, left: 0, right: window.innerWidth - windowState.width, bottom: window.innerHeight - windowState.height - 48 }}
       dragElastic={0}
       dragMomentum={false}
+      onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
       {/* Title Bar */}

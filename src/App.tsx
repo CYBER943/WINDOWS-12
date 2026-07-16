@@ -4,6 +4,7 @@ import { Taskbar } from './components/Taskbar';
 import { StartMenu } from './components/StartMenu';
 import { ActionCenter } from './components/ActionCenter';
 import { WidgetsPanel } from './components/WidgetsPanel';
+import { TaskView } from './components/TaskView';
 import { LockScreen } from './components/LockScreen';
 import { useStore } from './store/useStore';
 
@@ -29,6 +30,7 @@ export default function App() {
     <div className="w-full h-screen overflow-hidden relative text-gray-900 dark:text-white bg-black">
       <LockScreen />
       <Desktop />
+      <TaskView />
       <StartMenu />
       <ActionCenter />
       <WidgetsPanel />

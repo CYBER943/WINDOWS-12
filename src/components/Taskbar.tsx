@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useStore, APPS } from '../store/useStore';
 import { format } from 'date-fns';
 import { cn } from '../lib/utils';
-import { Wifi, Volume2, Battery, ChevronUp, Cloud } from 'lucide-react';
+import { Wifi, Volume2, Battery, ChevronUp, Cloud, LayoutGrid } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
 import { motion } from 'motion/react';
 
 export const Taskbar: React.FC = () => {
-  const { windows, openApp, toggleStartMenu, startMenuOpen, actionCenterOpen, toggleActionCenter, widgetsOpen, toggleWidgets, focusWindow } = useStore();
+  const { windows, openApp, toggleStartMenu, startMenuOpen, actionCenterOpen, toggleActionCenter, widgetsOpen, toggleWidgets, focusWindow, toggleTaskView } = useStore();
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -24,11 +24,11 @@ export const Taskbar: React.FC = () => {
 
   return (
     <div 
-      className="absolute bottom-0 left-0 right-0 h-12 bg-white/70 dark:bg-black/70 backdrop-blur-2xl border-t border-white/20 dark:border-white/10 flex items-center justify-between px-2 z-[90]"
+      className="absolute bottom-4 left-1/2 -translate-x-1/2 h-14 bg-white/70 dark:bg-[#1a1a1a]/80 backdrop-blur-3xl border border-white/20 dark:border-white/5 flex items-center justify-between px-2 z-[90] rounded-2xl shadow-2xl transition-all duration-300"
       onClick={(e) => e.stopPropagation()}
     >
       {/* Left items - Widgets */}
-      <div className="flex items-center h-full w-48">
+      <div className="flex items-center h-full mr-4">
         <button 
           onClick={toggleWidgets}
           className={cn(
@@ -49,17 +49,27 @@ export const Taskbar: React.FC = () => {
         <button 
           onClick={toggleStartMenu}
           className={cn(
-            "w-10 h-10 flex items-center justify-center rounded-md transition-all",
-            startMenuOpen ? "bg-white/60 dark:bg-white/20" : "hover:bg-white/40 dark:hover:bg-white/10"
+            "w-11 h-11 flex items-center justify-center rounded-xl transition-all",
+            useStore.getState().startMenuOpen ? "bg-white/60 dark:bg-white/10 shadow-inner" : "hover:bg-white/40 dark:hover:bg-white/5"
           )}
         >
           {/* Custom Windows-like Start Icon */}
-          <div className="grid grid-cols-2 gap-0.5 w-5 h-5 hover:scale-105 transition-transform duration-200">
-            <div className="bg-[#00a4ef] rounded-sm"></div>
-            <div className="bg-[#00a4ef] rounded-sm"></div>
-            <div className="bg-[#00a4ef] rounded-sm"></div>
-            <div className="bg-[#00a4ef] rounded-sm"></div>
+          <div className="grid grid-cols-2 gap-0.5 w-[22px] h-[22px] hover:scale-105 transition-transform duration-200">
+            <div className="bg-[#00a4ef] rounded-[3px] shadow-sm"></div>
+            <div className="bg-[#00a4ef] rounded-[3px] shadow-sm"></div>
+            <div className="bg-[#00a4ef] rounded-[3px] shadow-sm"></div>
+            <div className="bg-[#00a4ef] rounded-[3px] shadow-sm"></div>
           </div>
+        </button>
+
+        <button 
+          onClick={toggleTaskView}
+          className={cn(
+            "w-11 h-11 flex items-center justify-center rounded-xl transition-all relative group text-gray-800 dark:text-gray-100",
+            useStore.getState().taskViewOpen ? "bg-white/60 dark:bg-white/10 shadow-inner" : "hover:bg-white/40 dark:hover:bg-white/5"
+          )}
+        >
+          <LayoutGrid size={24} className="group-hover:-translate-y-0.5 transition-transform drop-shadow-sm" />
         </button>
 
         {/* Taskbar Apps */}
@@ -77,12 +87,12 @@ export const Taskbar: React.FC = () => {
                 else openApp(app.id);
               }}
               className={cn(
-                "w-10 h-10 flex items-center justify-center rounded-md transition-all relative group",
-                activeWindow ? "bg-white/60 dark:bg-white/20" : "hover:bg-white/40 dark:hover:bg-white/10"
+                "w-11 h-11 flex items-center justify-center rounded-xl transition-all relative group",
+                activeWindow ? "bg-white/60 dark:bg-white/10 shadow-inner" : "hover:bg-white/40 dark:hover:bg-white/5"
               )}
             >
-              {Icon && <Icon size={22} className={cn(
-                "text-gray-800 dark:text-gray-100 group-hover:-translate-y-0.5 transition-transform",
+              {Icon && <Icon size={24} className={cn(
+                "text-gray-800 dark:text-gray-100 group-hover:-translate-y-0.5 transition-transform drop-shadow-sm",
                 app.id === 'edge' ? "text-blue-500" : "",
                 app.id === 'explorer' ? "text-yellow-500" : ""
               )} />}
@@ -91,7 +101,7 @@ export const Taskbar: React.FC = () => {
               {isOpen && (
                 <div className={cn(
                   "absolute bottom-0 h-1 w-2 rounded-full transition-all duration-300",
-                  activeWindow ? "w-4 bg-blue-500" : "bg-gray-400 dark:bg-gray-500"
+                  activeWindow ? "w-4 bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]" : "bg-gray-400 dark:bg-gray-500"
                 )}></div>
               )}
             </button>
@@ -100,7 +110,7 @@ export const Taskbar: React.FC = () => {
       </div>
 
       {/* Right items - System Tray */}
-      <div className="flex items-center justify-end h-full w-48 gap-1 pr-2">
+      <div className="flex items-center justify-end h-full gap-1 pl-2">
         <button className="h-full px-2 flex items-center justify-center hover:bg-white/40 dark:hover:bg-white/10 transition-colors rounded-md text-gray-800 dark:text-gray-200">
           <ChevronUp size={16} />
         </button>

@@ -76,6 +76,18 @@ export const WidgetsPanel: React.FC = () => {
             </div>
           </div>
 
+          {/* AI Suggestions Widget */}
+          <div className="bg-gradient-to-br from-purple-500/10 to-blue-500/10 dark:from-purple-900/20 dark:to-blue-900/20 backdrop-blur-md rounded-2xl p-4 shadow-sm border border-purple-500/20 dark:border-purple-500/10 break-inside-avoid">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs font-semibold text-purple-600 dark:text-purple-400 flex items-center gap-1">✨ COPILOT+</span>
+            </div>
+            <p className="text-sm text-gray-800 dark:text-gray-200 font-medium mb-3">Looks like you have a Team Sync soon. Would you like me to prepare the presentation notes from yesterday?</p>
+            <div className="flex gap-2">
+              <button className="px-3 py-1.5 bg-purple-600 text-white rounded-md text-xs font-semibold hover:bg-purple-700 transition-colors">Yes, prepare notes</button>
+              <button className="px-3 py-1.5 bg-black/5 dark:bg-white/10 rounded-md text-xs font-semibold hover:bg-black/10 dark:hover:bg-white/20 transition-colors text-gray-800 dark:text-gray-200">Dismiss</button>
+            </div>
+          </div>
+
           {/* Calendar Widget */}
           <div className="bg-white/70 dark:bg-[#202020]/70 backdrop-blur-md rounded-2xl p-4 shadow-sm border border-white/30 dark:border-white/5 break-inside-avoid">
             <div className="flex items-center justify-between mb-2">

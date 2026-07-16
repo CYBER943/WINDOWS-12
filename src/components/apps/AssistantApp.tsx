@@ -10,7 +10,7 @@ interface Message {
 
 export const AssistantApp: React.FC<{ windowId: string }> = () => {
   const [messages, setMessages] = useState<Message[]>([
-    { id: '1', sender: 'bot', text: 'Hi there! I am your Windows 12 AI Assistant. How can I help you today?' }
+    { id: '1', sender: 'bot', text: 'Hi! I am Copilot+, powered by Agentic AI. I can search your Smart Recall timeline, adjust PC settings, or help with tasks across your apps. What can I do for you?' }
   ]);
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -45,14 +45,19 @@ export const AssistantApp: React.FC<{ windowId: string }> = () => {
   return (
     <div className="flex flex-col h-full bg-[#f3f3f3] dark:bg-[#1e1e1e] text-gray-900 dark:text-gray-100">
       {/* Header */}
-      <div className="flex items-center gap-3 p-4 border-b border-gray-200 dark:border-white/10 bg-white/50 dark:bg-black/20 backdrop-blur-md">
-        <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500 flex items-center justify-center text-white shadow-lg">
-          <Bot size={24} />
+      <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-white/10 bg-white/50 dark:bg-black/20 backdrop-blur-md">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500 flex items-center justify-center text-white shadow-lg">
+            <Bot size={24} />
+          </div>
+          <div>
+            <h2 className="font-semibold text-lg leading-tight">Copilot+</h2>
+            <p className="text-xs text-gray-500">Agentic AI & Smart Recall</p>
+          </div>
         </div>
-        <div>
-          <h2 className="font-semibold text-lg leading-tight">Copilot Concept</h2>
-          <p className="text-xs text-gray-500">Always here to help</p>
-        </div>
+        <button className="text-xs bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300 px-3 py-1.5 rounded-full font-semibold border border-purple-200 dark:border-purple-800">
+          Search Timeline
+        </button>
       </div>
 
       {/* Chat Area */}

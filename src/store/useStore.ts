@@ -80,8 +80,24 @@ export const APPS: AppMetadata[] = [
     name: 'Settings',
     icon: 'Settings',
     component: 'SettingsApp',
+    defaultWidth: 800,
+    defaultHeight: 600,
+  },
+  {
+    id: 'security',
+    name: 'Windows Security',
+    icon: 'Shield',
+    component: 'SecurityApp',
     defaultWidth: 700,
     defaultHeight: 500,
+  },
+  {
+    id: 'xbox',
+    name: 'Xbox',
+    icon: 'Gamepad2',
+    component: 'XboxApp',
+    defaultWidth: 850,
+    defaultHeight: 600,
   }
 ];
 
@@ -90,6 +106,7 @@ interface DesktopState {
   startMenuOpen: boolean;
   actionCenterOpen: boolean;
   widgetsOpen: boolean;
+  taskViewOpen: boolean;
   settings: SystemSettings;
   
   // Actions
@@ -103,6 +120,7 @@ interface DesktopState {
   toggleStartMenu: () => void;
   toggleActionCenter: () => void;
   toggleWidgets: () => void;
+  toggleTaskView: () => void;
   closeMenus: () => void;
   updateSettings: (settings: Partial<SystemSettings>) => void;
 }
@@ -116,6 +134,7 @@ export const useStore = create<DesktopState>()(
       startMenuOpen: false,
       actionCenterOpen: false,
       widgetsOpen: false,
+      taskViewOpen: false,
       settings: {
         theme: 'dark',
         wallpaper: 'https://images.unsplash.com/photo-1707343843437-caacff5cfa74?q=80&w=2940&auto=format&fit=crop',
@@ -137,6 +156,7 @@ export const useStore = create<DesktopState>()(
             ),
             startMenuOpen: false,
             widgetsOpen: false,
+            taskViewOpen: false,
           }));
           return;
         }
@@ -159,6 +179,7 @@ export const useStore = create<DesktopState>()(
           windows: [...state.windows.map(w => ({ ...w, isFocused: false })), newWindow],
           startMenuOpen: false,
           widgetsOpen: false,
+          taskViewOpen: false,
         }));
       },
 
@@ -215,6 +236,7 @@ export const useStore = create<DesktopState>()(
             startMenuOpen: false,
             actionCenterOpen: false,
             widgetsOpen: false,
+            taskViewOpen: false,
           };
         });
       },
@@ -256,11 +278,21 @@ export const useStore = create<DesktopState>()(
           widgetsOpen: !state.widgetsOpen,
           startMenuOpen: false,
           actionCenterOpen: false,
+          taskViewOpen: false,
+        }));
+      },
+
+      toggleTaskView: () => {
+        set((state) => ({
+          taskViewOpen: !state.taskViewOpen,
+          startMenuOpen: false,
+          actionCenterOpen: false,
+          widgetsOpen: false,
         }));
       },
       
       closeMenus: () => {
-        set({ startMenuOpen: false, actionCenterOpen: false, widgetsOpen: false });
+        set({ startMenuOpen: false, actionCenterOpen: false, widgetsOpen: false, taskViewOpen: false });
       },
 
       updateSettings: (newSettings) => {
