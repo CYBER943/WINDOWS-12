@@ -16,6 +16,7 @@ import { TaskManagerApp } from './apps/TaskManagerApp';
 import { CodeEditorApp } from './apps/CodeEditorApp';
 import { SecurityApp } from './apps/SecurityApp';
 import { XboxApp } from './apps/XboxApp';
+import { TimelineApp } from './apps/TimelineApp';
 
 const AppComponents: Record<string, React.FC<{ windowId: string }>> = {
   NotepadApp,
@@ -29,7 +30,8 @@ const AppComponents: Record<string, React.FC<{ windowId: string }>> = {
   TaskManagerApp,
   CodeEditorApp,
   SecurityApp,
-  XboxApp
+  XboxApp,
+  TimelineApp
 };
 
 interface WindowProps {
@@ -107,7 +109,12 @@ export const Window: React.FC<WindowProps> = ({ id }) => {
       }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ type: "spring", bounce: 0.1, duration: 0.3 }}
-      style={{ zIndex: windowState.zIndex }}
+      style={{ 
+        zIndex: windowState.zIndex,
+        boxShadow: windowState.isFocused && !windowState.isMaximized 
+          ? `0 0 0 1px ${useStore.getState().settings.accentColor || '#3b82f6'}, 0 25px 50px -12px rgba(0, 0, 0, 0.5)`
+          : undefined
+      }}
       className={cn(
         "absolute rounded-xl overflow-hidden flex flex-col shadow-2xl border border-white/10",
         "bg-white/70 dark:bg-black/70 backdrop-blur-2xl",

@@ -55,7 +55,10 @@ export const AssistantApp: React.FC<{ windowId: string }> = () => {
             <p className="text-xs text-gray-500">Agentic AI & Smart Recall</p>
           </div>
         </div>
-        <button className="text-xs bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300 px-3 py-1.5 rounded-full font-semibold border border-purple-200 dark:border-purple-800">
+        <button 
+          onClick={() => useStore.getState().openApp('timeline')}
+          className="text-xs bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300 px-3 py-1.5 rounded-full font-semibold border border-purple-200 dark:border-purple-800 hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-colors"
+        >
           Search Timeline
         </button>
       </div>

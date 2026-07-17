@@ -98,6 +98,14 @@ export const APPS: AppMetadata[] = [
     component: 'XboxApp',
     defaultWidth: 850,
     defaultHeight: 600,
+  },
+  {
+    id: 'timeline',
+    name: 'Smart Recall',
+    icon: 'History',
+    component: 'TimelineApp',
+    defaultWidth: 800,
+    defaultHeight: 600,
   }
 ];
 

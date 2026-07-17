@@ -4,11 +4,13 @@ import { format } from 'date-fns';
 import { cn } from '../lib/utils';
 import { Wifi, Volume2, Battery, ChevronUp, Cloud, LayoutGrid } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 
 export const Taskbar: React.FC = () => {
   const { windows, openApp, toggleStartMenu, startMenuOpen, actionCenterOpen, toggleActionCenter, widgetsOpen, toggleWidgets, focusWindow, toggleTaskView } = useStore();
   const [time, setTime] = useState(new Date());
+  const [hoveredAppId, setHoveredAppId] = useState<string | null>(null);
+  let hoverTimeout: any;
 
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);
@@ -77,34 +79,76 @@ export const Taskbar: React.FC = () => {
           const Icon = (LucideIcons as Record<string, React.ElementType>)[app.icon];
           const isOpen = openAppIds.includes(app.id);
           const activeWindow = windows.find(w => w.appId === app.id && w.isFocused);
+          const appWindows = windows.filter(w => w.appId === app.id);
 
           return (
-            <button
-              key={app.id}
-              onClick={() => {
-                const w = windows.find(w => w.appId === app.id);
-                if (w) focusWindow(w.id);
-                else openApp(app.id);
+            <div 
+              key={app.id} 
+              className="relative flex items-center justify-center"
+              onMouseEnter={() => {
+                clearTimeout(hoverTimeout);
+                hoverTimeout = setTimeout(() => setHoveredAppId(app.id), 400);
               }}
-              className={cn(
-                "w-11 h-11 flex items-center justify-center rounded-xl transition-all relative group",
-                activeWindow ? "bg-white/60 dark:bg-white/10 shadow-inner" : "hover:bg-white/40 dark:hover:bg-white/5"
-              )}
+              onMouseLeave={() => {
+                clearTimeout(hoverTimeout);
+                setHoveredAppId(null);
+              }}
             >
-              {Icon && <Icon size={24} className={cn(
-                "text-gray-800 dark:text-gray-100 group-hover:-translate-y-0.5 transition-transform drop-shadow-sm",
-                app.id === 'edge' ? "text-blue-500" : "",
-                app.id === 'explorer' ? "text-yellow-500" : ""
-              )} />}
-              
-              {/* Indicator dot for open apps */}
-              {isOpen && (
-                <div className={cn(
-                  "absolute bottom-0 h-1 w-2 rounded-full transition-all duration-300",
-                  activeWindow ? "w-4 bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]" : "bg-gray-400 dark:bg-gray-500"
-                )}></div>
-              )}
-            </button>
+              <AnimatePresence>
+                {hoveredAppId === app.id && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 5, scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute bottom-16 bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-2xl border border-white/20 dark:border-white/10 rounded-xl p-3 shadow-2xl z-[100] min-w-[160px] flex flex-col items-center gap-2 pointer-events-none"
+                  >
+                    <div className="flex items-center gap-2 text-sm font-semibold mb-1 w-full justify-start text-gray-800 dark:text-gray-200">
+                       {Icon && <Icon size={16} />}
+                       {app.name}
+                    </div>
+                    {isOpen ? (
+                      <div className="w-40 aspect-video bg-gray-100 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-md overflow-hidden relative shadow-inner">
+                        <div className="absolute inset-0 flex items-center justify-center">
+                           {Icon && <Icon size={32} className="text-gray-300 dark:text-gray-700" />}
+                        </div>
+                        <div className="absolute top-1 left-2 text-[10px] text-gray-500 font-medium">
+                           {appWindows[0]?.title || app.name}
+                        </div>
+                      </div>
+                    ) : (
+                      <span className="text-xs text-gray-500">Not running</span>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              <button
+                onClick={() => {
+                  const w = windows.find(w => w.appId === app.id);
+                  if (w) focusWindow(w.id);
+                  else openApp(app.id);
+                }}
+                className={cn(
+                  "w-11 h-11 flex items-center justify-center rounded-xl transition-all relative group",
+                  activeWindow ? "bg-white/60 dark:bg-white/10 shadow-inner" : "hover:bg-white/40 dark:hover:bg-white/5"
+                )}
+              >
+                {Icon && <Icon size={24} className={cn(
+                  "text-gray-800 dark:text-gray-100 group-hover:-translate-y-0.5 transition-transform drop-shadow-sm",
+                  app.id === 'edge' ? "text-blue-500" : "",
+                  app.id === 'explorer' ? "text-yellow-500" : ""
+                )} />}
+                
+                {/* Indicator dot for open apps */}
+                {isOpen && (
+                  <div className={cn(
+                    "absolute bottom-0 h-1 w-2 rounded-full transition-all duration-300",
+                    activeWindow ? "w-4 bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]" : "bg-gray-400 dark:bg-gray-500"
+                  )}></div>
+                )}
+              </button>
+            </div>
           )
         })}
       </div>

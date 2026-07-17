@@ -24,6 +24,7 @@ export interface WindowState {
 export interface SystemSettings {
   theme: 'light' | 'dark';
   wallpaper: string;
+  accentColor?: string;
   isLocked: boolean;
 }
 

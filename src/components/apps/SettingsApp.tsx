@@ -45,7 +45,7 @@ export const SettingsApp: React.FC<{ windowId: string }> = () => {
         {/* Theme Toggle */}
         <div className="mb-8 p-6 bg-white dark:bg-white/5 rounded-xl border border-gray-200 dark:border-white/10 shadow-sm">
           <h4 className="text-sm font-semibold mb-4">Choose your mode</h4>
-          <div className="flex gap-4">
+          <div className="flex gap-4 mb-6">
             <button 
               onClick={() => updateSettings({ theme: 'light' })}
               className={cn(
@@ -66,6 +66,25 @@ export const SettingsApp: React.FC<{ windowId: string }> = () => {
               <Moon size={24} />
               <span className="font-medium">Dark</span>
             </button>
+          </div>
+
+          <h4 className="text-sm font-semibold mb-4">Accent Color</h4>
+          <div className="flex flex-wrap gap-3">
+             {['#0078d4', '#881798', '#0099bc', '#c239b3', '#00cc6a', '#ff8c00', '#e81123', '#68768a'].map(color => (
+               <button
+                 key={color}
+                 onClick={() => updateSettings({ accentColor: color })}
+                 className={cn(
+                   "w-10 h-10 rounded-full transition-transform hover:scale-110 relative outline-none",
+                   settings.accentColor === color || (!settings.accentColor && color === '#0078d4') ? "ring-2 ring-offset-2 dark:ring-offset-[#252525]" : ""
+                 )}
+                 style={{ backgroundColor: color, '--tw-ring-color': color } as React.CSSProperties}
+               >
+                 {(settings.accentColor === color || (!settings.accentColor && color === '#0078d4')) && (
+                   <span className="absolute inset-0 flex items-center justify-center text-white">✓</span>
+                 )}
+               </button>
+             ))}
           </div>
         </div>
 
