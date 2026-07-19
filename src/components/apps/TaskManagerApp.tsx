@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useStore, APPS } from '../../store/useStore';
-import { Activity, Cpu, Database, HardDrive, Network } from 'lucide-react';
+import { Icon } from '../ui/Icon';
 import { cn } from '../../lib/utils';
 import { LineChart, Line, ResponsiveContainer, YAxis } from 'recharts';
 
@@ -61,7 +61,7 @@ export const TaskManagerApp: React.FC<{ windowId: string }> = ({ windowId }) => 
                 <tr key={app.id} className="border-b border-gray-100 dark:border-white/5 hover:bg-white/50 dark:hover:bg-white/5 transition-colors">
                   <td className="py-2 px-4 flex items-center gap-2">
                     <div className="w-6 h-6 bg-blue-500 rounded flex items-center justify-center text-white">
-                      <Activity size={14} />
+                      <Icon name="Activity" size={14} />
                     </div>
                     {app.name}
                   </td>
@@ -73,7 +73,7 @@ export const TaskManagerApp: React.FC<{ windowId: string }> = ({ windowId }) => 
               <tr className="border-b border-gray-100 dark:border-white/5 hover:bg-white/50 dark:hover:bg-white/5 transition-colors">
                 <td className="py-2 px-4 flex items-center gap-2">
                   <div className="w-6 h-6 bg-gray-500 rounded flex items-center justify-center text-white">
-                    <Activity size={14} />
+                    <Icon name="Activity" size={14} />
                   </div>
                   System Idle Process
                 </td>
@@ -90,7 +90,7 @@ export const TaskManagerApp: React.FC<{ windowId: string }> = ({ windowId }) => 
             <div className="w-1/3 border-r border-gray-200 dark:border-white/10 p-2 space-y-1">
               <div className="p-3 bg-white dark:bg-white/10 rounded border-l-4 border-blue-500 cursor-pointer">
                 <div className="flex justify-between items-center mb-1">
-                  <span className="font-semibold flex items-center gap-2"><Cpu size={16}/> CPU</span>
+                  <span className="font-semibold flex items-center gap-2"><Icon name="Cpu" size={16}/> CPU</span>
                   <span className="text-xl">{cpuUsage[cpuUsage.length - 1]}%</span>
                 </div>
                 <div className="h-8">
@@ -104,7 +104,7 @@ export const TaskManagerApp: React.FC<{ windowId: string }> = ({ windowId }) => 
               </div>
               <div className="p-3 hover:bg-black/5 dark:hover:bg-white/5 rounded cursor-pointer transition-colors">
                 <div className="flex justify-between items-center mb-1">
-                  <span className="font-semibold flex items-center gap-2"><Database size={16}/> Memory</span>
+                  <span className="font-semibold flex items-center gap-2"><Icon name="Database" size={16}/> Memory</span>
                   <span className="text-xl">{memUsage[memUsage.length - 1]}%</span>
                 </div>
                 <div className="h-8">
@@ -118,7 +118,7 @@ export const TaskManagerApp: React.FC<{ windowId: string }> = ({ windowId }) => 
               </div>
             </div>
             <div className="w-2/3 p-6 bg-white dark:bg-transparent">
-              <h2 className="text-2xl font-light mb-6 flex items-center gap-2"><Cpu size={24}/> CPU</h2>
+              <h2 className="text-2xl font-light mb-6 flex items-center gap-2"><Icon name="Cpu" size={24}/> CPU</h2>
               <div className="h-48 border border-gray-200 dark:border-white/20 mb-6 p-2 rounded">
                  <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={cpuUsage.map((val, i) => ({ val, i }))}>

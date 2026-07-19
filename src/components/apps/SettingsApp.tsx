@@ -1,6 +1,6 @@
 import React from 'react';
 import { useStore } from '../../store/useStore';
-import { Monitor, Paintbrush, Moon, Sun, Bot, Shield } from 'lucide-react';
+import { Icon } from '../ui/Icon';
 import { cn } from '../../lib/utils';
 
 const wallpapers = [
@@ -20,19 +20,19 @@ export const SettingsApp: React.FC<{ windowId: string }> = () => {
         <h2 className="font-semibold text-xl mb-6">Settings</h2>
         <div className="space-y-1">
           <button className="w-full flex items-center gap-3 px-3 py-2 rounded-md hover:bg-black/5 dark:hover:bg-white/5 text-sm font-medium transition-colors">
-            <Monitor size={18} />
+            <Icon name="Desktop" size={20} />
             System
           </button>
           <button className="w-full flex items-center gap-3 px-3 py-2 rounded-md bg-black/5 dark:bg-white/10 text-sm font-medium">
-            <Paintbrush size={18} className="text-blue-500" />
+            <Icon name="Paint" size={20} className="text-blue-500" />
             Personalization
           </button>
           <button className="w-full flex items-center gap-3 px-3 py-2 rounded-md hover:bg-black/5 dark:hover:bg-white/5 text-sm font-medium transition-colors">
-            <Bot size={18} />
+            <Icon name="Assistant" size={20} />
             AI & Copilot
           </button>
           <button className="w-full flex items-center gap-3 px-3 py-2 rounded-md hover:bg-black/5 dark:hover:bg-white/5 text-sm font-medium transition-colors">
-            <Shield size={18} />
+            <Icon name="Security" size={20} />
             Privacy & Security
           </button>
         </div>
@@ -53,7 +53,7 @@ export const SettingsApp: React.FC<{ windowId: string }> = () => {
                 settings.theme === 'light' ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20" : "border-gray-200 dark:border-white/10 hover:border-blue-300"
               )}
             >
-              <Sun size={24} />
+              <Icon name="Sun" size={24} />
               <span className="font-medium">Light</span>
             </button>
             <button 
@@ -63,7 +63,7 @@ export const SettingsApp: React.FC<{ windowId: string }> = () => {
                 settings.theme === 'dark' ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20" : "border-gray-200 dark:border-white/10 hover:border-blue-300"
               )}
             >
-              <Moon size={24} />
+              <Icon name="Sleep" size={24} />
               <span className="font-medium">Dark</span>
             </button>
           </div>

@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence, useDragControls } from 'motion/react';
 import { useStore, APPS } from '../store/useStore';
-import { X, Minus, Maximize, Minimize2 } from 'lucide-react';
-import * as LucideIcons from 'lucide-react';
+import { Icon } from './ui/Icon';
 import { cn } from '../lib/utils';
 import { NotepadApp } from './apps/NotepadApp';
 import { CalculatorApp } from './apps/CalculatorApp';
@@ -65,7 +64,6 @@ export const Window: React.FC<WindowProps> = ({ id }) => {
   if (!app) return null;
 
   const AppComponent = AppComponents[app.component];
-  const Icon = (LucideIcons as Record<string, React.ElementType>)[app.icon];
 
   const handleDragStart = () => setIsDragging(true);
 
@@ -144,7 +142,7 @@ export const Window: React.FC<WindowProps> = ({ id }) => {
         onDoubleClick={() => maximizeWindow(id)}
       >
         <div className="flex items-center gap-2 pointer-events-none">
-          {Icon && <Icon size={16} className="text-gray-700 dark:text-gray-300" />}
+          <Icon name={app.icon as any} size={16} className="text-gray-700 dark:text-gray-300" />
           <span className="text-xs font-semibold text-gray-800 dark:text-gray-200">{windowState.title}</span>
         </div>
         
@@ -154,19 +152,19 @@ export const Window: React.FC<WindowProps> = ({ id }) => {
             onClick={(e) => { e.stopPropagation(); minimizeWindow(id); }}
             className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-black/10 dark:hover:bg-white/10 transition-colors text-gray-700 dark:text-gray-300"
           >
-            <Minus size={16} />
+            <Icon name="Minus" size={16} />
           </button>
           <button 
             onClick={(e) => { e.stopPropagation(); maximizeWindow(id); }}
             className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-black/10 dark:hover:bg-white/10 transition-colors text-gray-700 dark:text-gray-300"
           >
-            {windowState.isMaximized ? <Minimize2 size={14} /> : <Maximize size={14} />}
+            {windowState.isMaximized ? <Icon name="Minimize2" size={14} /> : <Icon name="Maximize" size={14} />}
           </button>
           <button 
             onClick={(e) => { e.stopPropagation(); closeWindow(id); }}
             className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-500 hover:text-white transition-colors text-gray-700 dark:text-gray-300"
           >
-            <X size={16} />
+            <Icon name="X" size={16} />
           </button>
         </div>
       </div>

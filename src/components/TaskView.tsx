@@ -1,9 +1,8 @@
 import React from 'react';
 import { useStore, APPS } from '../store/useStore';
 import { motion, AnimatePresence } from 'motion/react';
-import * as LucideIcons from 'lucide-react';
+import { Icon } from './ui/Icon';
 import { cn } from '../lib/utils';
-import { Plus, X } from 'lucide-react';
 
 export const TaskView: React.FC = () => {
   const { taskViewOpen, windows, focusWindow, closeWindow, toggleTaskView } = useStore();
@@ -31,7 +30,7 @@ export const TaskView: React.FC = () => {
         </div>
         <div className="flex flex-col items-center gap-2 group cursor-pointer">
           <div className="w-48 h-32 rounded-xl bg-black/40 hover:bg-white/20 border border-white/20 transition-all flex items-center justify-center relative shadow-lg">
-            <Plus size={32} className="text-white" />
+            <Icon name="Plus" size={32} className="text-white" />
           </div>
           <div className="h-1 w-8 bg-transparent" />
         </div>
@@ -43,8 +42,6 @@ export const TaskView: React.FC = () => {
             {windows.map((w) => {
               const app = APPS.find(a => a.id === w.appId);
               if (!app) return null;
-              const Icon = (LucideIcons as Record<string, React.ElementType>)[app.icon];
-              
               return (
                 <motion.div
                   key={w.id}
@@ -58,7 +55,7 @@ export const TaskView: React.FC = () => {
                   }}
                 >
                   <div className="flex items-center gap-2 mb-2 text-white drop-shadow-md bg-black/50 w-fit px-3 py-1 rounded-full backdrop-blur-md">
-                    {Icon && <Icon size={16} />}
+                    <Icon name={app.icon as any} size={16} />
                     <span className="text-sm font-medium">{w.title}</span>
                   </div>
                   
@@ -66,7 +63,7 @@ export const TaskView: React.FC = () => {
                     {/* Simulated window content preview placeholder */}
                     <div className="absolute inset-0 bg-white dark:bg-[#202020] opacity-90" />
                     <div className="absolute inset-0 flex items-center justify-center">
-                      {Icon && <Icon size={48} className="text-gray-400 dark:text-gray-600" />}
+                      <Icon name={app.icon as any} size={48} className="text-gray-400 dark:text-gray-600" />
                     </div>
                   </div>
 
@@ -77,7 +74,7 @@ export const TaskView: React.FC = () => {
                     }}
                     className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
                   >
-                    <X size={16} />
+                    <Icon name="X" size={16} />
                   </button>
                 </motion.div>
               );

@@ -14,7 +14,7 @@ export const APPS: AppMetadata[] = [
   {
     id: 'edge',
     name: 'Browser',
-    icon: 'Globe',
+    icon: 'Browser',
     component: 'BrowserApp',
     defaultWidth: 1000,
     defaultHeight: 600,
@@ -22,7 +22,7 @@ export const APPS: AppMetadata[] = [
   {
     id: 'notepad',
     name: 'Notepad',
-    icon: 'FileText',
+    icon: 'File',
     component: 'NotepadApp',
     defaultWidth: 600,
     defaultHeight: 400,
@@ -46,7 +46,7 @@ export const APPS: AppMetadata[] = [
   {
     id: 'paint',
     name: 'Paint',
-    icon: 'Palette',
+    icon: 'Paint',
     component: 'PaintApp',
     defaultWidth: 800,
     defaultHeight: 600,
@@ -54,7 +54,7 @@ export const APPS: AppMetadata[] = [
   {
     id: 'assistant',
     name: 'AI Assistant',
-    icon: 'Bot',
+    icon: 'Assistant',
     component: 'AssistantApp',
     defaultWidth: 400,
     defaultHeight: 600,
@@ -86,7 +86,7 @@ export const APPS: AppMetadata[] = [
   {
     id: 'security',
     name: 'Windows Security',
-    icon: 'Shield',
+    icon: 'Security',
     component: 'SecurityApp',
     defaultWidth: 700,
     defaultHeight: 500,
@@ -94,7 +94,7 @@ export const APPS: AppMetadata[] = [
   {
     id: 'xbox',
     name: 'Xbox',
-    icon: 'Gamepad2',
+    icon: 'Xbox',
     component: 'XboxApp',
     defaultWidth: 850,
     defaultHeight: 600,
@@ -102,7 +102,7 @@ export const APPS: AppMetadata[] = [
   {
     id: 'timeline',
     name: 'Smart Recall',
-    icon: 'History',
+    icon: 'Timeline',
     component: 'TimelineApp',
     defaultWidth: 800,
     defaultHeight: 600,

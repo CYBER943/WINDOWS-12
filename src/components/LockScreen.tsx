@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useStore } from '../store/useStore';
 import { format } from 'date-fns';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowRight, Wifi, Battery, Volume2 } from 'lucide-react';
+import { Icon } from './ui/Icon';
 import { cn } from '../lib/utils';
 
 export const LockScreen: React.FC = () => {
@@ -88,7 +88,7 @@ export const LockScreen: React.FC = () => {
                 type="submit"
                 className="absolute right-1 w-8 h-8 flex items-center justify-center rounded bg-white/20 text-white hover:bg-white/30 transition-colors opacity-0 group-focus-within:opacity-100"
               >
-                <ArrowRight size={16} />
+                <Icon name="ArrowRight" size={16} />
               </button>
             </form>
             
@@ -99,8 +99,8 @@ export const LockScreen: React.FC = () => {
 
       {/* Bottom Status Bar */}
       <div className="absolute bottom-6 right-8 z-10 flex gap-4 text-white drop-shadow-md">
-        <Wifi size={24} />
-        <Battery size={24} />
+        <Icon name="Wifi" size={24} />
+        <Icon name="Battery" size={24} />
       </div>
     </div>
   );

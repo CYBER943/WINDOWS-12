@@ -1,5 +1,5 @@
 import React from 'react';
-import { Gamepad2, Play, Users, Trophy, Download } from 'lucide-react';
+import { Icon } from '../ui/Icon';
 import { cn } from '../../lib/utils';
 
 export const XboxApp: React.FC<{ windowId: string }> = () => {
@@ -9,7 +9,7 @@ export const XboxApp: React.FC<{ windowId: string }> = () => {
       <div className="w-64 flex flex-col bg-[#1a1a1a] border-r border-[#2d2d2d]">
         <div className="p-4 flex items-center gap-3 text-lg font-bold">
           <div className="w-8 h-8 rounded-full bg-[#107c10] flex items-center justify-center">
-            <Gamepad2 size={20} className="text-white" />
+            <Icon name="Gamepad2" size={20} className="text-white" />
           </div>
           XBOX
         </div>
@@ -17,16 +17,16 @@ export const XboxApp: React.FC<{ windowId: string }> = () => {
         <div className="flex-1 overflow-y-auto px-2 space-y-6 mt-4">
           <div className="space-y-1">
             <button className="w-full flex items-center gap-3 px-3 py-2 bg-[#2d2d2d] rounded-md text-sm font-semibold hover:bg-[#3d3d3d] transition-colors">
-              <Gamepad2 size={18} /> Game Pass
+              <Icon name="Gamepad2" size={18} /> Game Pass
             </button>
             <button className="w-full flex items-center gap-3 px-3 py-2 text-gray-400 rounded-md text-sm font-semibold hover:bg-[#2d2d2d] hover:text-gray-200 transition-colors">
-              <Users size={18} /> Social
+              <Icon name="Users" size={18} /> Social
             </button>
             <button className="w-full flex items-center gap-3 px-3 py-2 text-gray-400 rounded-md text-sm font-semibold hover:bg-[#2d2d2d] hover:text-gray-200 transition-colors">
-              <Trophy size={18} /> Achievements
+              <Icon name="Trophy" size={18} /> Achievements
             </button>
             <button className="w-full flex items-center gap-3 px-3 py-2 text-gray-400 rounded-md text-sm font-semibold hover:bg-[#2d2d2d] hover:text-gray-200 transition-colors">
-              <Download size={18} /> Cloud Gaming
+              <Icon name="Download" size={18} /> Cloud Gaming
             </button>
           </div>
 
@@ -41,7 +41,7 @@ export const XboxApp: React.FC<{ windowId: string }> = () => {
                   <p className="text-sm font-semibold truncate group-hover:text-white text-gray-300">Halo Infinite</p>
                   <p className="text-[10px] text-gray-500 truncate">Ready to play</p>
                 </div>
-                <Play size={14} className="text-[#107c10] opacity-0 group-hover:opacity-100 transition-opacity" />
+                <Icon name="Play" size={14} className="text-[#107c10] opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
               <div className="group flex items-center gap-3 px-3 py-2 hover:bg-[#2d2d2d] rounded-md cursor-pointer transition-colors">
                 <div className="w-8 h-8 rounded bg-gray-800 overflow-hidden shrink-0">
@@ -51,7 +51,7 @@ export const XboxApp: React.FC<{ windowId: string }> = () => {
                   <p className="text-sm font-semibold truncate group-hover:text-white text-gray-300">Forza Horizon 5</p>
                   <p className="text-[10px] text-gray-500 truncate">Ready to play</p>
                 </div>
-                <Play size={14} className="text-[#107c10] opacity-0 group-hover:opacity-100 transition-opacity" />
+                <Icon name="Play" size={14} className="text-[#107c10] opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
             </div>
           </div>
@@ -61,7 +61,7 @@ export const XboxApp: React.FC<{ windowId: string }> = () => {
           <div className="flex items-center gap-3 hover:bg-[#2d2d2d] p-2 rounded-md cursor-pointer transition-colors">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-blue-500 p-0.5">
               <div className="w-full h-full bg-[#1a1a1a] rounded-full flex items-center justify-center">
-                <Users size={20} className="text-gray-300" />
+                <Icon name="Users" size={20} className="text-gray-300" />
               </div>
             </div>
             <div>
@@ -89,7 +89,7 @@ export const XboxApp: React.FC<{ windowId: string }> = () => {
             
             <div className="flex gap-4">
               <button className="flex items-center gap-2 bg-[#107c10] hover:bg-[#128f12] text-white px-8 py-3 rounded font-bold transition-colors">
-                <Play size={20} fill="currentColor" /> Play
+                <Icon name="Play" size={20} className="fill-current" /> Play
               </button>
               <button className="bg-[#2d2d2d] hover:bg-[#3d3d3d] text-white px-6 py-3 rounded font-bold transition-colors">
                 View details
@@ -123,7 +123,7 @@ export const XboxApp: React.FC<{ windowId: string }> = () => {
                     <img src={`https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2940&auto=format&fit=crop&sig=${i}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={`Game ${i}`} />
                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                       <div className="w-12 h-12 rounded-full bg-[#107c10] flex items-center justify-center">
-                         <Download size={24} className="text-white" />
+                         <Icon name="Download" size={24} className="text-white" />
                       </div>
                     </div>
                   </div>

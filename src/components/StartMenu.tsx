@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useStore, APPS } from '../store/useStore';
 import { motion, AnimatePresence } from 'motion/react';
-import { Power, Settings as SettingsIcon, User, Search, FileText } from 'lucide-react';
-import * as LucideIcons from 'lucide-react';
+import { Icon } from './ui/Icon';
 import { cn } from '../lib/utils';
 import { format } from 'date-fns';
 
@@ -26,7 +25,7 @@ export const StartMenu: React.FC = () => {
       {/* Search Bar */}
       <div className="p-8 pb-4">
         <div className="relative">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+          <Icon name="Search" className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
           <input
             type="text"
             placeholder="Search for apps, settings, and documents"
@@ -46,7 +45,6 @@ export const StartMenu: React.FC = () => {
         </div>
         <div className="grid grid-cols-6 gap-4">
           {filteredApps.map(app => {
-            const Icon = (LucideIcons as Record<string, React.ElementType>)[app.icon];
             return (
               <button
                 key={app.id}
@@ -54,7 +52,7 @@ export const StartMenu: React.FC = () => {
                 className="flex flex-col items-center gap-2 p-2 rounded-lg hover:bg-white/40 dark:hover:bg-white/10 transition-colors group"
               >
                 <div className="w-12 h-12 rounded-xl bg-blue-500 flex items-center justify-center text-white shadow-sm group-hover:scale-105 transition-transform">
-                  {Icon && <Icon size={24} />}
+                  <Icon name={app.icon as any} size={24} />
                 </div>
                 <span className="text-xs text-gray-800 dark:text-gray-200 truncate w-full text-center">{app.name}</span>
               </button>
@@ -72,7 +70,7 @@ export const StartMenu: React.FC = () => {
           {[1, 2, 3, 4].map(i => (
             <button key={i} className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/40 dark:hover:bg-white/10 transition-colors text-left">
               <div className="w-10 h-10 flex items-center justify-center bg-gray-100 dark:bg-white/5 rounded">
-                <FileText size={20} className="text-blue-500" />
+                <Icon name="FileText" size={20} className="text-blue-500" />
               </div>
               <div className="flex flex-col overflow-hidden">
                 <span className="text-sm text-gray-800 dark:text-gray-200 truncate">Concept_Design_v{i}.txt</span>
@@ -87,7 +85,7 @@ export const StartMenu: React.FC = () => {
       <div className="h-16 mt-auto border-t border-white/20 dark:border-white/10 bg-white/30 dark:bg-black/30 flex items-center justify-between px-8">
         <button className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/40 dark:hover:bg-white/10 transition-colors">
           <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-400 to-purple-500 flex items-center justify-center text-white">
-            <User size={16} />
+            <Icon name="User" size={16} />
           </div>
           <span className="text-sm font-medium text-gray-800 dark:text-gray-200">User</span>
         </button>
@@ -96,7 +94,7 @@ export const StartMenu: React.FC = () => {
           className="p-2 rounded-lg hover:bg-white/40 dark:hover:bg-white/10 transition-colors text-gray-800 dark:text-gray-200"
           title="Power"
         >
-          <Power size={18} />
+          <Icon name="Power" size={18} />
         </button>
       </div>
     </motion.div>

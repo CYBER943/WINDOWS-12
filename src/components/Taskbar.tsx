@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useStore, APPS } from '../store/useStore';
 import { format } from 'date-fns';
 import { cn } from '../lib/utils';
-import { Wifi, Volume2, Battery, ChevronUp, Cloud, LayoutGrid } from 'lucide-react';
-import * as LucideIcons from 'lucide-react';
+import { Icon } from './ui/Icon';
 import { motion, AnimatePresence } from 'motion/react';
 
 export const Taskbar: React.FC = () => {
@@ -38,7 +37,7 @@ export const Taskbar: React.FC = () => {
             widgetsOpen ? "bg-white/60 dark:bg-white/20" : "hover:bg-white/40 dark:hover:bg-white/10"
           )}
         >
-          <Cloud size={20} className="text-blue-500" />
+          <Icon name="Cloud" size={20} className="text-blue-500" />
           <div className="flex flex-col items-start leading-none">
             <span className="font-semibold text-xs">72°</span>
             <span className="text-[10px] text-gray-500">Sunny</span>
@@ -71,12 +70,11 @@ export const Taskbar: React.FC = () => {
             useStore.getState().taskViewOpen ? "bg-white/60 dark:bg-white/10 shadow-inner" : "hover:bg-white/40 dark:hover:bg-white/5"
           )}
         >
-          <LayoutGrid size={24} className="group-hover:-translate-y-0.5 transition-transform drop-shadow-sm" />
+          <Icon name="LayoutGrid" size={24} className="group-hover:-translate-y-0.5 transition-transform drop-shadow-sm" />
         </button>
 
         {/* Taskbar Apps */}
         {allTaskbarApps.map(app => {
-          const Icon = (LucideIcons as Record<string, React.ElementType>)[app.icon];
           const isOpen = openAppIds.includes(app.id);
           const activeWindow = windows.find(w => w.appId === app.id && w.isFocused);
           const appWindows = windows.filter(w => w.appId === app.id);
@@ -104,13 +102,13 @@ export const Taskbar: React.FC = () => {
                     className="absolute bottom-16 bg-white/90 dark:bg-[#1a1a1a]/90 backdrop-blur-2xl border border-white/20 dark:border-white/10 rounded-xl p-3 shadow-2xl z-[100] min-w-[160px] flex flex-col items-center gap-2 pointer-events-none"
                   >
                     <div className="flex items-center gap-2 text-sm font-semibold mb-1 w-full justify-start text-gray-800 dark:text-gray-200">
-                       {Icon && <Icon size={16} />}
+                       <Icon name={app.icon as any} size={16} />
                        {app.name}
                     </div>
                     {isOpen ? (
                       <div className="w-40 aspect-video bg-gray-100 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-md overflow-hidden relative shadow-inner">
                         <div className="absolute inset-0 flex items-center justify-center">
-                           {Icon && <Icon size={32} className="text-gray-300 dark:text-gray-700" />}
+                           <Icon name={app.icon as any} size={32} className="text-gray-300 dark:text-gray-700" />
                         </div>
                         <div className="absolute top-1 left-2 text-[10px] text-gray-500 font-medium">
                            {appWindows[0]?.title || app.name}
@@ -134,11 +132,11 @@ export const Taskbar: React.FC = () => {
                   activeWindow ? "bg-white/60 dark:bg-white/10 shadow-inner" : "hover:bg-white/40 dark:hover:bg-white/5"
                 )}
               >
-                {Icon && <Icon size={24} className={cn(
+                <Icon name={app.icon as any} size={20} className={cn(
                   "text-gray-800 dark:text-gray-100 group-hover:-translate-y-0.5 transition-transform drop-shadow-sm",
                   app.id === 'edge' ? "text-blue-500" : "",
                   app.id === 'explorer' ? "text-yellow-500" : ""
-                )} />}
+                )} />
                 
                 {/* Indicator dot for open apps */}
                 {isOpen && (
@@ -156,7 +154,7 @@ export const Taskbar: React.FC = () => {
       {/* Right items - System Tray */}
       <div className="flex items-center justify-end h-full gap-1 pl-2">
         <button className="h-full px-2 flex items-center justify-center hover:bg-white/40 dark:hover:bg-white/10 transition-colors rounded-md text-gray-800 dark:text-gray-200">
-          <ChevronUp size={16} />
+          <Icon name="ChevronUp" size={16} />
         </button>
         
         <div 
@@ -166,9 +164,9 @@ export const Taskbar: React.FC = () => {
             actionCenterOpen ? "bg-white/60 dark:bg-white/20" : "hover:bg-white/40 dark:hover:bg-white/10"
           )}
         >
-          <Wifi size={16} />
-          <Volume2 size={16} />
-          <Battery size={16} />
+          <Icon name="Wifi" size={16} />
+          <Icon name="Volume2" size={16} />
+          <Icon name="Battery" size={16} />
         </div>
 
         <div className="h-full px-2 flex flex-col justify-center items-end hover:bg-white/40 dark:hover:bg-white/10 transition-colors rounded-md cursor-pointer text-[11px] font-medium text-gray-800 dark:text-gray-200 text-right select-none leading-tight">

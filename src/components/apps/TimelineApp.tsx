@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { History, Search, Calendar, FileText, Image as ImageIcon, Video, Box, Folder, Globe, Maximize2 } from 'lucide-react';
+import { Icon } from '../ui/Icon';
 import { cn } from '../../lib/utils';
 import { useStore } from '../../store/useStore';
 
@@ -8,12 +8,12 @@ export const TimelineApp: React.FC<{ windowId: string }> = () => {
   const [search, setSearch] = useState('');
 
   const timelineEvents = [
-    { id: 1, time: '10:45 AM', type: 'app', title: 'Opened Code Editor', icon: Box, color: 'text-blue-500' },
-    { id: 2, time: '10:30 AM', type: 'file', title: 'Edited "project_specs.md"', icon: FileText, color: 'text-orange-500' },
-    { id: 3, time: '09:15 AM', type: 'web', title: 'Browsed Figma - Concept Design', icon: Globe, color: 'text-purple-500' },
-    { id: 4, time: 'Yesterday', type: 'image', title: 'Saved "screenshot_42.png"', icon: ImageIcon, color: 'text-green-500' },
-    { id: 5, time: 'Yesterday', type: 'app', title: 'Played Xbox - Starfield', icon: Box, color: 'text-green-600' },
-    { id: 6, time: 'Mon, 12th', type: 'file', title: 'Created Folder "Assets"', icon: Folder, color: 'text-yellow-500' },
+    { id: 1, time: '10:45 AM', type: 'app', title: 'Opened Code Editor', icon: 'Box', color: 'text-blue-500' },
+    { id: 2, time: '10:30 AM', type: 'file', title: 'Edited "project_specs.md"', icon: 'FileText', color: 'text-orange-500' },
+    { id: 3, time: '09:15 AM', type: 'web', title: 'Browsed Figma - Concept Design', icon: 'Globe', color: 'text-purple-500' },
+    { id: 4, time: 'Yesterday', type: 'image', title: 'Saved "screenshot_42.png"', icon: 'Pictures', color: 'text-green-500' },
+    { id: 5, time: 'Yesterday', type: 'app', title: 'Played Xbox - Starfield', icon: 'Box', color: 'text-green-600' },
+    { id: 6, time: 'Mon, 12th', type: 'file', title: 'Created Folder "Assets"', icon: 'Folder', color: 'text-yellow-500' },
   ];
 
   return (
@@ -22,7 +22,7 @@ export const TimelineApp: React.FC<{ windowId: string }> = () => {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-purple-500 to-indigo-600 flex items-center justify-center shadow-lg">
-              <History size={20} className="text-white" />
+              <Icon name="Timeline" size={20} className="text-white" />
             </div>
             <div>
               <h1 className="text-2xl font-semibold">Smart Recall</h1>
@@ -31,7 +31,7 @@ export const TimelineApp: React.FC<{ windowId: string }> = () => {
           </div>
           <div className="flex gap-2">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+              <Icon name="Search" className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
               <input
                 type="text"
                 placeholder="Search past activities..."
@@ -75,7 +75,7 @@ export const TimelineApp: React.FC<{ windowId: string }> = () => {
                 <div className="flex-1 bg-white dark:bg-[#252525] p-4 rounded-xl border border-gray-200 dark:border-white/10 shadow-sm group-hover:shadow-md transition-all group-hover:-translate-y-0.5 flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className={cn("p-2 rounded-lg bg-gray-100 dark:bg-white/5", event.color)}>
-                      <event.icon size={20} />
+                      <Icon name={event.icon as any} size={20} />
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-900 dark:text-white">{event.title}</h3>
@@ -83,7 +83,7 @@ export const TimelineApp: React.FC<{ windowId: string }> = () => {
                     </div>
                   </div>
                   <button className="opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:bg-gray-100 dark:hover:bg-white/10 rounded-full text-gray-500">
-                    <Maximize2 size={16} />
+                    <Icon name="Maximize2" size={16} />
                   </button>
                 </div>
               </div>

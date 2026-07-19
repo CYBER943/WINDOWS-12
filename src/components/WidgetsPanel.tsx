@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useStore } from '../store/useStore';
 import { motion, AnimatePresence } from 'motion/react';
-import { Search, Plus, User, MoreHorizontal, Cloud, Calendar, TrendingUp, Sun } from 'lucide-react';
+import { Icon } from './ui/Icon';
 import { format } from 'date-fns';
 
 export const WidgetsPanel: React.FC = () => {
@@ -34,16 +34,16 @@ export const WidgetsPanel: React.FC = () => {
         </div>
         <div className="flex items-center gap-3">
           <button className="p-2 rounded-full bg-white/40 dark:bg-white/10 hover:bg-white/60 dark:hover:bg-white/20 transition-colors text-gray-800 dark:text-gray-200">
-            <Plus size={18} />
+            <Icon name="Plus" size={18} />
           </button>
           <button className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-400 to-purple-500 flex items-center justify-center text-white">
-            <User size={16} />
+            <Icon name="User" size={16} />
           </button>
         </div>
       </div>
 
       <div className="relative mb-6">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+        <Icon name="Search" className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
         <input 
           type="text" 
           placeholder="Search the web"
@@ -57,22 +57,22 @@ export const WidgetsPanel: React.FC = () => {
           {/* Weather Widget */}
           <div className="bg-white/70 dark:bg-[#202020]/70 backdrop-blur-md rounded-2xl p-4 shadow-sm border border-white/30 dark:border-white/5 break-inside-avoid">
             <div className="flex items-center justify-between mb-4">
-              <span className="text-xs font-semibold text-gray-500 flex items-center gap-1"><Cloud size={14} /> WEATHER</span>
-              <MoreHorizontal size={16} className="text-gray-400" />
+              <span className="text-xs font-semibold text-gray-500 flex items-center gap-1"><Icon name="Cloud" size={14} /> WEATHER</span>
+              <Icon name="MoreHorizontal" size={16} className="text-gray-400" />
             </div>
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-3xl font-light text-gray-900 dark:text-white">72°</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-300">San Francisco, CA</p>
               </div>
-              <Cloud size={48} className="text-blue-400" />
+              <Icon name="Cloud" size={48} className="text-blue-400" />
             </div>
             <div className="mt-4 grid grid-cols-5 gap-2 text-center text-xs text-gray-600 dark:text-gray-400">
-              <div><p>M</p><Cloud size={16} className="mx-auto my-1"/><p>71°</p></div>
-              <div><p>T</p><Sun size={16} className="mx-auto my-1 text-yellow-500"/><p>75°</p></div>
-              <div><p>W</p><Sun size={16} className="mx-auto my-1 text-yellow-500"/><p>76°</p></div>
-              <div><p>T</p><Cloud size={16} className="mx-auto my-1"/><p>70°</p></div>
-              <div><p>F</p><Cloud size={16} className="mx-auto my-1"/><p>68°</p></div>
+              <div><p>M</p><Icon name="Cloud" size={16} className="mx-auto my-1"/><p>71°</p></div>
+              <div><p>T</p><Icon name="Sun" size={16} className="mx-auto my-1 text-yellow-500"/><p>75°</p></div>
+              <div><p>W</p><Icon name="Sun" size={16} className="mx-auto my-1 text-yellow-500"/><p>76°</p></div>
+              <div><p>T</p><Icon name="Cloud" size={16} className="mx-auto my-1"/><p>70°</p></div>
+              <div><p>F</p><Icon name="Cloud" size={16} className="mx-auto my-1"/><p>68°</p></div>
             </div>
           </div>
 
@@ -91,8 +91,8 @@ export const WidgetsPanel: React.FC = () => {
           {/* Calendar Widget */}
           <div className="bg-white/70 dark:bg-[#202020]/70 backdrop-blur-md rounded-2xl p-4 shadow-sm border border-white/30 dark:border-white/5 break-inside-avoid">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-semibold text-gray-500 flex items-center gap-1"><Calendar size={14} /> CALENDAR</span>
-              <MoreHorizontal size={16} className="text-gray-400" />
+              <span className="text-xs font-semibold text-gray-500 flex items-center gap-1"><Icon name="Calendar" size={14} /> CALENDAR</span>
+              <Icon name="MoreHorizontal" size={16} className="text-gray-400" />
             </div>
             <h3 className="text-lg font-medium text-gray-900 dark:text-white">{format(time, 'EEEE, MMMM d')}</h3>
             <div className="mt-4 space-y-3">
@@ -114,8 +114,8 @@ export const WidgetsPanel: React.FC = () => {
           {/* Stocks Widget */}
           <div className="bg-white/70 dark:bg-[#202020]/70 backdrop-blur-md rounded-2xl p-4 shadow-sm border border-white/30 dark:border-white/5 break-inside-avoid">
             <div className="flex items-center justify-between mb-4">
-              <span className="text-xs font-semibold text-gray-500 flex items-center gap-1"><TrendingUp size={14} /> STOCKS</span>
-              <MoreHorizontal size={16} className="text-gray-400" />
+              <span className="text-xs font-semibold text-gray-500 flex items-center gap-1"><Icon name="TrendingUp" size={14} /> STOCKS</span>
+              <Icon name="MoreHorizontal" size={16} className="text-gray-400" />
             </div>
             <div className="space-y-3">
               <div className="flex justify-between items-center">

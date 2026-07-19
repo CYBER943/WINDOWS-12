@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Mic, Bot, User } from 'lucide-react';
+import { Icon } from '../ui/Icon';
 import { motion, AnimatePresence } from 'motion/react';
+import { useStore } from '../../store/useStore';
 
 interface Message {
   id: string;
@@ -48,7 +49,7 @@ export const AssistantApp: React.FC<{ windowId: string }> = () => {
       <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-white/10 bg-white/50 dark:bg-black/20 backdrop-blur-md">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500 flex items-center justify-center text-white shadow-lg">
-            <Bot size={24} />
+            <Icon name="Assistant" size={24} />
           </div>
           <div>
             <h2 className="font-semibold text-lg leading-tight">Copilot+</h2>
@@ -74,7 +75,7 @@ export const AssistantApp: React.FC<{ windowId: string }> = () => {
               className={`flex gap-3 ${msg.sender === 'user' ? 'flex-row-reverse' : 'flex-row'}`}
             >
               <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${msg.sender === 'user' ? 'bg-blue-600' : 'bg-gradient-to-tr from-blue-500 to-purple-500'}`}>
-                {msg.sender === 'user' ? <User size={16} className="text-white" /> : <Bot size={16} className="text-white" />}
+                {msg.sender === 'user' ? <Icon name="User" size={16} className="text-white" /> : <Icon name="Assistant" size={16} className="text-white" />}
               </div>
               <div 
                 className={`px-4 py-2 rounded-2xl max-w-[80%] text-sm ${
@@ -103,14 +104,14 @@ export const AssistantApp: React.FC<{ windowId: string }> = () => {
           />
           <div className="absolute right-2 flex items-center gap-1">
             <button type="button" className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-gray-500 transition-colors">
-              <Mic size={18} />
+              <Icon name="Mic" size={18} />
             </button>
             <button 
               type="submit" 
               disabled={!input.trim()}
               className="w-8 h-8 flex items-center justify-center rounded-full bg-blue-600 hover:bg-blue-700 text-white transition-colors disabled:opacity-50 disabled:hover:bg-blue-600"
             >
-              <Send size={16} className="-ml-0.5" />
+              <Icon name="Send" size={16} className="-ml-0.5" />
             </button>
           </div>
         </form>

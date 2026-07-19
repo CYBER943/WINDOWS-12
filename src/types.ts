@@ -1,7 +1,9 @@
+import { IconName } from './lib/icons';
+
 export interface AppMetadata {
   id: string;
   name: string;
-  icon: string; // We'll use lucide-react icon names or custom SVG
+  icon: IconName;
   component: string;
   defaultWidth?: number;
   defaultHeight?: number;

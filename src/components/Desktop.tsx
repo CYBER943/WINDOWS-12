@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useStore, APPS } from '../store/useStore';
 import { Window } from './Window';
 import { motion, AnimatePresence } from 'motion/react';
-import { Folder, FileText, Gamepad2 } from 'lucide-react';
+import { Icon } from './ui/Icon';
 import { cn } from '../lib/utils';
 
 export const Desktop: React.FC = () => {
@@ -10,10 +10,11 @@ export const Desktop: React.FC = () => {
   const [selectedIcon, setSelectedIcon] = useState<string | null>(null);
 
   const desktopIcons = [
-    { id: 'recycle', name: 'Recycle Bin', icon: Folder },
-    { id: 'explorer', name: 'File Explorer', icon: Folder, appId: 'explorer' },
-    { id: 'readme', name: 'readme.txt', icon: FileText, appId: 'notepad' },
-    { id: 'xbox', name: 'Xbox', icon: Gamepad2, appId: 'xbox' },
+    { id: 'this-pc', name: 'This PC', icon: 'Desktop', appId: 'explorer' },
+    { id: 'settings', name: 'Settings', icon: 'Settings', appId: 'settings' },
+    { id: 'about', name: 'About Windows 12', icon: 'CircleHelp', appId: 'notepad' },
+    { id: 'edge', name: 'Microsoft Edge', icon: 'Browser', appId: 'edge' },
+    { id: 'feedback', name: 'Feedback', icon: 'MessageSquare', appId: 'notepad' },
   ];
 
   return (
@@ -46,12 +47,14 @@ export const Desktop: React.FC = () => {
               }
             }}
             className={cn(
-              "w-20 h-24 flex flex-col items-center justify-start gap-1 p-1 rounded-sm cursor-default hover:bg-white/10 transition-colors",
-              selectedIcon === icon.id ? "bg-white/20 border border-white/30" : "border border-transparent"
+              "w-24 h-28 flex flex-col items-center justify-start gap-2 p-2 rounded-xl cursor-default transition-all duration-200 group",
+              selectedIcon === icon.id ? "bg-white/20 shadow-sm" : "hover:bg-white/10"
             )}
           >
-            <icon.icon size={36} className="text-white drop-shadow-md mt-1" />
-            <span className="text-xs text-white text-center break-words w-full drop-shadow-md select-none line-clamp-2">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-purple-500 to-blue-500 shadow-md group-hover:shadow-lg group-hover:-translate-y-1 transition-all duration-200 flex items-center justify-center">
+              <Icon name={icon.icon as any} size={32} className="text-white drop-shadow-sm" />
+            </div>
+            <span className="text-xs text-white text-center break-words w-full drop-shadow-md select-none line-clamp-2 font-medium">
               {icon.name}
             </span>
           </div>

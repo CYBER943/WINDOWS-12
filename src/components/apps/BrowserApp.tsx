@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, ArrowRight, RotateCw, Home, Search, Star } from 'lucide-react';
+import { Icon } from '../ui/Icon';
 
 export const BrowserApp: React.FC<{ windowId: string }> = () => {
   const [url, setUrl] = useState('https://www.wikipedia.org');
@@ -20,16 +20,16 @@ export const BrowserApp: React.FC<{ windowId: string }> = () => {
       <div className="flex items-center gap-2 p-2 border-b border-gray-200 dark:border-white/10 bg-[#f1f1f1] dark:bg-[#2d2d2d]">
         <div className="flex items-center gap-1">
           <button className="p-1.5 rounded-md hover:bg-black/5 dark:hover:bg-white/10 text-gray-600 dark:text-gray-300">
-            <ArrowLeft size={16} />
+            <Icon name="ArrowLeft" size={16} />
           </button>
           <button className="p-1.5 rounded-md hover:bg-black/5 dark:hover:bg-white/10 text-gray-600 dark:text-gray-300 opacity-50">
-            <ArrowRight size={16} />
+            <Icon name="ArrowRight" size={16} />
           </button>
           <button className="p-1.5 rounded-md hover:bg-black/5 dark:hover:bg-white/10 text-gray-600 dark:text-gray-300">
-            <RotateCw size={16} />
+            <Icon name="Restart" size={16} />
           </button>
           <button className="p-1.5 rounded-md hover:bg-black/5 dark:hover:bg-white/10 text-gray-600 dark:text-gray-300">
-            <Home size={16} />
+            <Icon name="Home" size={16} />
           </button>
         </div>
         
@@ -40,8 +40,8 @@ export const BrowserApp: React.FC<{ windowId: string }> = () => {
             onChange={(e) => setInputUrl(e.target.value)}
             className="w-full h-8 pl-8 pr-8 rounded-full bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-white/10 focus:border-blue-500 focus:outline-none text-sm dark:text-white"
           />
-          <Search size={14} className="absolute left-3 text-gray-400" />
-          <Star size={14} className="absolute right-3 text-gray-400" />
+          <Icon name="Search" size={14} className="absolute left-3 text-gray-400" />
+          <Icon name="Star" size={14} className="absolute right-3 text-gray-400" />
         </form>
       </div>
 

@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Download, Eraser, PenTool, Square, Circle } from 'lucide-react';
+import { Icon } from '../ui/Icon';
 import { cn } from '../../lib/utils';
 
 export const PaintApp: React.FC<{ windowId: string }> = () => {
@@ -75,13 +75,13 @@ export const PaintApp: React.FC<{ windowId: string }> = () => {
             onClick={() => setTool('pen')}
             className={cn("p-2 rounded hover:bg-black/5 dark:hover:bg-white/10", tool === 'pen' && "bg-blue-100 dark:bg-white/20 text-blue-600 dark:text-white")}
           >
-            <PenTool size={18} />
+            <Icon name="PenTool" size={18} />
           </button>
           <button 
             onClick={() => setTool('eraser')}
             className={cn("p-2 rounded hover:bg-black/5 dark:hover:bg-white/10", tool === 'eraser' && "bg-blue-100 dark:bg-white/20 text-blue-600 dark:text-white")}
           >
-            <Eraser size={18} />
+            <Icon name="Eraser" size={18} />
           </button>
         </div>
         <div className="w-px h-6 bg-gray-300 dark:bg-gray-600" />

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Play, Save, Settings, FolderOpen, File, Search } from 'lucide-react';
+import { Icon } from '../ui/Icon';
 import { cn } from '../../lib/utils';
 
 export const CodeEditorApp: React.FC<{ windowId: string }> = ({ windowId }) => {
@@ -27,11 +27,11 @@ helloWorld();
       <div className="flex flex-1 overflow-hidden">
         {/* Activity Bar */}
         <div className="w-12 bg-[#333333] flex flex-col items-center py-4 gap-6 border-r border-[#252526]">
-          <div className="p-2 cursor-pointer text-white/50 hover:text-white transition-colors"><File size={24} /></div>
-          <div className="p-2 cursor-pointer text-white/50 hover:text-white transition-colors"><Search size={24} /></div>
-          <div className="p-2 cursor-pointer text-white/50 hover:text-white transition-colors"><FolderOpen size={24} /></div>
+          <div className="p-2 cursor-pointer text-white/50 hover:text-white transition-colors"><Icon name="File" size={24} /></div>
+          <div className="p-2 cursor-pointer text-white/50 hover:text-white transition-colors"><Icon name="Search" size={24} /></div>
+          <div className="p-2 cursor-pointer text-white/50 hover:text-white transition-colors"><Icon name="FolderOpen" size={24} /></div>
           <div className="flex-1" />
-          <div className="p-2 cursor-pointer text-white/50 hover:text-white transition-colors"><Settings size={24} /></div>
+          <div className="p-2 cursor-pointer text-white/50 hover:text-white transition-colors"><Icon name="Settings" size={24} /></div>
         </div>
 
         {/* Sidebar */}
@@ -80,8 +80,8 @@ helloWorld();
       {/* Status Bar */}
       <div className="h-6 bg-[#007acc] text-white flex items-center justify-between px-4 text-xs font-sans">
         <div className="flex gap-4">
-          <span className="flex items-center gap-1"><FolderOpen size={12}/> concept-project</span>
-          <span className="flex items-center gap-1"><X size={12}/> 0 <AlertTriangle size={12}/> 0</span>
+          <span className="flex items-center gap-1"><Icon name="FolderOpen" size={12}/> concept-project</span>
+          <span className="flex items-center gap-1"><Icon name="Close" size={12}/> 0 <Icon name="AlertTriangle" size={12}/> 0</span>
         </div>
         <div className="flex gap-4">
           <span>Ln 1, Col 1</span>
@@ -93,7 +93,3 @@ helloWorld();
     </div>
   );
 };
-
-// Dummy icons for status bar
-const X = ({ size }: { size: number }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>;
-const AlertTriangle = ({ size }: { size: number }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>;

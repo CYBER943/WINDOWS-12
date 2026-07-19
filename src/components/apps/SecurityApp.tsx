@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useStore } from '../../store/useStore';
-import { Shield, ShieldAlert, ShieldCheck, Activity, HardDrive, Wifi, Lock, UserCheck, AlertTriangle } from 'lucide-react';
+import { Icon } from '../ui/Icon';
 import { cn } from '../../lib/utils';
 
 export const SecurityApp: React.FC<{ windowId: string }> = () => {
@@ -17,11 +17,11 @@ export const SecurityApp: React.FC<{ windowId: string }> = () => {
   };
 
   const navItems = [
-    { id: 'dashboard', label: 'Security at a glance', icon: Shield },
-    { id: 'virus', label: 'Virus & threat protection', icon: ShieldAlert },
-    { id: 'account', label: 'Account protection', icon: UserCheck },
-    { id: 'firewall', label: 'Firewall & network protection', icon: Wifi },
-    { id: 'device', label: 'Device security', icon: HardDrive },
+    { id: 'dashboard', label: 'Security at a glance', icon: 'Security' },
+    { id: 'virus', label: 'Virus & threat protection', icon: 'ShieldAlert' },
+    { id: 'account', label: 'Account protection', icon: 'UserCheck' },
+    { id: 'firewall', label: 'Firewall & network protection', icon: 'Wifi' },
+    { id: 'device', label: 'Device security', icon: 'HardDrive' },
   ];
 
   return (
@@ -29,7 +29,7 @@ export const SecurityApp: React.FC<{ windowId: string }> = () => {
       {/* Sidebar */}
       <div className="w-64 border-r border-gray-200 dark:border-white/10 bg-white/50 dark:bg-[#2d2d2d]/50 p-4">
         <div className="flex items-center gap-3 mb-6 px-2 text-lg font-semibold text-blue-600 dark:text-blue-400">
-          <ShieldCheck size={24} />
+          <Icon name="ShieldCheck" size={24} />
           Windows Security
         </div>
         <div className="space-y-1">
@@ -44,7 +44,7 @@ export const SecurityApp: React.FC<{ windowId: string }> = () => {
                   : "hover:bg-black/5 dark:hover:bg-white/5 text-gray-700 dark:text-gray-300"
               )}
             >
-              <item.icon size={18} />
+              <Icon name={item.icon as any} size={20} />
               {item.label}
             </button>
           ))}
@@ -60,26 +60,26 @@ export const SecurityApp: React.FC<{ windowId: string }> = () => {
         {activeTab === 'dashboard' && (
           <div className="grid grid-cols-2 gap-6">
             <div className="bg-white dark:bg-[#252525] p-6 rounded-xl border border-gray-200 dark:border-white/10 shadow-sm flex flex-col items-center text-center">
-              <ShieldCheck size={48} className="text-green-500 mb-4" />
+              <Icon name="ShieldCheck" size={48} className="text-green-500 mb-4" />
               <h3 className="text-lg font-semibold mb-2">Virus & threat protection</h3>
               <p className="text-sm text-gray-500 mb-4">No actions needed.</p>
               <p className="text-xs text-gray-400 mt-auto">Last scan: {lastScan}</p>
             </div>
             <div className="bg-white dark:bg-[#252525] p-6 rounded-xl border border-gray-200 dark:border-white/10 shadow-sm flex flex-col items-center text-center">
-              <UserCheck size={48} className="text-green-500 mb-4" />
+              <Icon name="UserCheck" size={48} className="text-green-500 mb-4" />
               <h3 className="text-lg font-semibold mb-2">Account protection</h3>
               <p className="text-sm text-gray-500 mb-4">No actions needed.</p>
             </div>
             <div className="bg-white dark:bg-[#252525] p-6 rounded-xl border border-gray-200 dark:border-white/10 shadow-sm flex flex-col items-center text-center">
-              <Wifi size={48} className="text-green-500 mb-4" />
+              <Icon name="Wifi" size={48} className="text-green-500 mb-4" />
               <h3 className="text-lg font-semibold mb-2">Firewall & network protection</h3>
               <p className="text-sm text-gray-500 mb-4">No actions needed.</p>
             </div>
             <div className="bg-white dark:bg-[#252525] p-6 rounded-xl border border-gray-200 dark:border-white/10 shadow-sm flex flex-col items-center text-center">
-              <HardDrive size={48} className="text-yellow-500 mb-4" />
+              <Icon name="HardDrive" size={48} className="text-yellow-500 mb-4" />
               <h3 className="text-lg font-semibold mb-2">Device security</h3>
               <p className="text-sm text-gray-500 mb-4 flex items-center gap-1 justify-center">
-                <AlertTriangle size={14} className="text-yellow-500"/> Copilot+ NPU features disabled
+                <Icon name="AlertTriangle" size={14} className="text-yellow-500"/> Copilot+ NPU features disabled
               </p>
               <button className="text-sm text-blue-600 hover:underline">Review settings</button>
             </div>
@@ -90,7 +90,7 @@ export const SecurityApp: React.FC<{ windowId: string }> = () => {
           <div className="max-w-2xl">
             <div className="bg-white dark:bg-[#252525] p-6 rounded-xl border border-gray-200 dark:border-white/10 shadow-sm mb-6">
               <div className="flex items-start gap-4">
-                <ShieldCheck size={32} className="text-green-500 mt-1" />
+                <Icon name="ShieldCheck" size={32} className="text-green-500 mt-1" />
                 <div className="flex-1">
                   <h3 className="text-lg font-semibold mb-1">Current threats</h3>
                   <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">No current threats found.</p>

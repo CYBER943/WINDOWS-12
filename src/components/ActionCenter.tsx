@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useStore } from '../store/useStore';
 import { motion, AnimatePresence } from 'motion/react';
-import { Wifi, Bluetooth, Volume2, Sun, Moon, Battery, Settings, Edit2 } from 'lucide-react';
+import { Icon } from './ui/Icon';
 import { cn } from '../lib/utils';
 
 export const ActionCenter: React.FC = () => {
@@ -12,10 +12,10 @@ export const ActionCenter: React.FC = () => {
   if (!actionCenterOpen) return null;
 
   const quickActions = [
-    { id: 'wifi', name: 'Wi-Fi', icon: Wifi, active: true, color: 'bg-blue-500 text-white', inactive: 'bg-black/5 dark:bg-white/10' },
-    { id: 'bt', name: 'Bluetooth', icon: Bluetooth, active: false, color: 'bg-blue-500 text-white', inactive: 'bg-black/5 dark:bg-white/10' },
-    { id: 'theme', name: settings.theme === 'dark' ? 'Dark Mode' : 'Light Mode', icon: settings.theme === 'dark' ? Moon : Sun, active: settings.theme === 'dark', color: 'bg-blue-500 text-white', inactive: 'bg-black/5 dark:bg-white/10', action: () => updateSettings({ theme: settings.theme === 'dark' ? 'light' : 'dark' }) },
-    { id: 'batt', name: 'Battery saver', icon: Battery, active: false, color: 'bg-green-500 text-white', inactive: 'bg-black/5 dark:bg-white/10' },
+    { id: 'wifi', name: 'Wi-Fi', icon: 'Wifi', active: true, color: 'bg-blue-500 text-white', inactive: 'bg-black/5 dark:bg-white/10' },
+    { id: 'bt', name: 'Bluetooth', icon: 'Bluetooth', active: false, color: 'bg-blue-500 text-white', inactive: 'bg-black/5 dark:bg-white/10' },
+    { id: 'theme', name: settings.theme === 'dark' ? 'Dark Mode' : 'Light Mode', icon: settings.theme === 'dark' ? 'Moon' : 'Sun', active: settings.theme === 'dark', color: 'bg-blue-500 text-white', inactive: 'bg-black/5 dark:bg-white/10', action: () => updateSettings({ theme: settings.theme === 'dark' ? 'light' : 'dark' }) },
+    { id: 'batt', name: 'Battery saver', icon: 'Battery', active: false, color: 'bg-green-500 text-white', inactive: 'bg-black/5 dark:bg-white/10' },
   ];
 
   return (
@@ -39,7 +39,7 @@ export const ActionCenter: React.FC = () => {
               !action.active && "hover:border-gray-300 dark:hover:border-gray-500"
             )}
           >
-            <action.icon size={18} className="mb-2" />
+            <Icon name={action.icon as any} size={18} className="mb-2" />
             <span className="text-xs font-semibold">{action.name}</span>
           </button>
         ))}
@@ -48,7 +48,7 @@ export const ActionCenter: React.FC = () => {
       {/* Sliders */}
       <div className="space-y-4 mb-6">
         <div className="flex items-center gap-3">
-          <Sun size={18} className="text-gray-600 dark:text-gray-400" />
+          <Icon name="Sun" size={18} className="text-gray-600 dark:text-gray-400" />
           <input 
             type="range" 
             min="0" max="100" 
@@ -58,7 +58,7 @@ export const ActionCenter: React.FC = () => {
           />
         </div>
         <div className="flex items-center gap-3">
-          <Volume2 size={18} className="text-gray-600 dark:text-gray-400" />
+          <Icon name="Volume2" size={18} className="text-gray-600 dark:text-gray-400" />
           <input 
             type="range" 
             min="0" max="100" 
@@ -74,10 +74,10 @@ export const ActionCenter: React.FC = () => {
         <span className="text-xs text-gray-500 font-medium">95% (1 hr 30 min)</span>
         <div className="flex items-center gap-2">
           <button className="p-2 rounded-md hover:bg-black/5 dark:hover:bg-white/10 text-gray-600 dark:text-gray-300">
-            <Edit2 size={16} />
+            <Icon name="Edit2" size={16} />
           </button>
           <button className="p-2 rounded-md hover:bg-black/5 dark:hover:bg-white/10 text-gray-600 dark:text-gray-300">
-            <Settings size={16} />
+            <Icon name="Settings" size={16} />
           </button>
         </div>
       </div>

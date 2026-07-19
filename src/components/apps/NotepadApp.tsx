@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FileText, Save } from 'lucide-react';
+import { Icon } from '../ui/Icon';
 import { set, get } from 'idb-keyval';
 
 export const NotepadApp: React.FC<{ windowId: string }> = () => {
@@ -25,7 +25,7 @@ export const NotepadApp: React.FC<{ windowId: string }> = () => {
           onClick={handleSave}
           className="flex items-center gap-2 px-3 py-1.5 text-sm hover:bg-black/5 dark:hover:bg-white/10 rounded-md transition-colors"
         >
-          <Save size={16} className={isSaving ? 'text-green-500' : ''} />
+          <Icon name="Save" size={16} className={isSaving ? 'text-green-500' : ''} />
           {isSaving ? 'Saved' : 'Save'}
         </button>
         <div className="w-px h-4 bg-gray-300 dark:bg-gray-600 mx-1" />
