@@ -6,10 +6,25 @@ import { ActionCenter } from './components/ActionCenter';
 import { WidgetsPanel } from './components/WidgetsPanel';
 import { TaskView } from './components/TaskView';
 import { LockScreen } from './components/LockScreen';
+import { CommandCenter } from './components/CommandCenter';
+import { ClipboardManager } from './components/ClipboardManager';
 import { useStore } from './store/useStore';
 
 export default function App() {
-  const { settings } = useStore();
+  const { settings, toggleCommandCenter } = useStore();
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Toggle command center on Ctrl+Space or Cmd+Space
+      if ((e.ctrlKey || e.metaKey) && e.code === 'Space') {
+        e.preventDefault();
+        toggleCommandCenter();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [toggleCommandCenter]);
 
   useEffect(() => {
     if (settings.theme === 'dark') {
@@ -34,6 +49,8 @@ export default function App() {
       <StartMenu />
       <ActionCenter />
       <WidgetsPanel />
+      <CommandCenter />
+      <ClipboardManager />
       <Taskbar />
     </div>
   );

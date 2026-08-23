@@ -6,8 +6,14 @@ import { Icon } from './ui/Icon';
 import { cn } from '../lib/utils';
 
 export const Desktop: React.FC = () => {
-  const { windows, closeMenus, settings, openApp } = useStore();
+  const { windows, closeMenus, settings, openApp, snapPreview } = useStore();
   const [selectedIcon, setSelectedIcon] = useState<string | null>(null);
+
+  // Calculate snap preview bounds
+  let snapStyle = {};
+  if (snapPreview === 'left') snapStyle = { left: 8, top: 8, bottom: '56px', width: 'calc(50% - 12px)' };
+  if (snapPreview === 'right') snapStyle = { right: 8, top: 8, bottom: '56px', width: 'calc(50% - 12px)' };
+  if (snapPreview === 'top') snapStyle = { left: 8, right: 8, top: 8, bottom: '56px' };
 
   const desktopIcons = [
     { id: 'this-pc', name: 'This PC', icon: 'Desktop', appId: 'explorer' },
@@ -60,6 +66,19 @@ export const Desktop: React.FC = () => {
           </div>
         ))}
       </div>
+
+      <AnimatePresence>
+        {snapPreview && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.15 }}
+            className="absolute z-10 bg-white/20 dark:bg-white/10 backdrop-blur-md border-2 border-white/40 dark:border-white/20 rounded-xl pointer-events-none"
+            style={snapStyle}
+          />
+        )}
+      </AnimatePresence>
 
       <AnimatePresence>
         {windows.map((window) => (

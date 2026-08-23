@@ -45,7 +45,8 @@ export const Window: React.FC<WindowProps> = ({ id }) => {
     maximizeWindow, 
     focusWindow,
     updateWindowPosition,
-    updateWindowSize
+    updateWindowSize,
+    setSnapPreview
   } = useStore();
   
   const windowRef = useRef<HTMLDivElement>(null);
@@ -67,8 +68,17 @@ export const Window: React.FC<WindowProps> = ({ id }) => {
 
   const handleDragStart = () => setIsDragging(true);
 
+  const handleDrag = (e: any, info: any) => {
+    const threshold = 15;
+    if (info.point.x < threshold) setSnapPreview('left');
+    else if (info.point.x > window.innerWidth - threshold) setSnapPreview('right');
+    else if (info.point.y < threshold) setSnapPreview('top');
+    else setSnapPreview(null);
+  };
+
   const handleDragEnd = (e: any, info: any) => {
     setIsDragging(false);
+    setSnapPreview(null);
     const newX = windowState.x + info.offset.x;
     const newY = windowState.y + info.offset.y;
     
@@ -126,6 +136,7 @@ export const Window: React.FC<WindowProps> = ({ id }) => {
       dragElastic={0}
       dragMomentum={false}
       onDragStart={handleDragStart}
+      onDrag={handleDrag}
       onDragEnd={handleDragEnd}
     >
       {/* Title Bar */}

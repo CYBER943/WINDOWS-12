@@ -3,9 +3,24 @@ import { Icon } from '../ui/Icon';
 
 export const ExplorerApp: React.FC<{ windowId: string }> = () => {
   return (
-    <div className="flex h-full bg-[#fcfcfc] dark:bg-[#191919] text-gray-900 dark:text-gray-100 select-none">
-      {/* Sidebar */}
-      <div className="w-56 border-r border-gray-200 dark:border-white/10 flex flex-col bg-[#f5f5f5] dark:bg-[#202020]">
+    <div className="flex flex-col h-full bg-[#fcfcfc] dark:bg-[#191919] text-gray-900 dark:text-gray-100 select-none">
+      {/* Tab bar */}
+      <div className="flex items-center gap-1 px-2 pt-2 bg-[#e5e5e5] dark:bg-[#1a1a1a] border-b border-gray-200 dark:border-white/10">
+        <div className="flex items-center gap-2 px-3 py-1.5 bg-[#fcfcfc] dark:bg-[#202020] rounded-t-lg border border-b-0 border-gray-200 dark:border-white/10 text-sm">
+          <Icon name="HardDrive" size={16} className="text-gray-500" />
+          <span>Local Disk (C:)</span>
+          <button className="ml-2 hover:bg-black/10 dark:hover:bg-white/10 rounded-full p-0.5">
+            <Icon name="X" size={14} />
+          </button>
+        </div>
+        <button className="p-1 hover:bg-black/10 dark:hover:bg-white/10 rounded-md text-gray-500">
+          <Icon name="Plus" size={18} />
+        </button>
+      </div>
+
+      <div className="flex flex-1 overflow-hidden">
+        {/* Sidebar */}
+        <div className="w-56 border-r border-gray-200 dark:border-white/10 flex flex-col bg-[#f5f5f5] dark:bg-[#202020]">
         <div className="p-2 space-y-1">
           {/* Quick Access */}
           <div>
@@ -82,6 +97,7 @@ export const ExplorerApp: React.FC<{ windowId: string }> = () => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

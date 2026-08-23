@@ -115,6 +115,8 @@ interface DesktopState {
   actionCenterOpen: boolean;
   widgetsOpen: boolean;
   taskViewOpen: boolean;
+  commandCenterOpen: boolean;
+  snapPreview: string | null;
   settings: SystemSettings;
   
   // Actions
@@ -129,7 +131,9 @@ interface DesktopState {
   toggleActionCenter: () => void;
   toggleWidgets: () => void;
   toggleTaskView: () => void;
+  toggleCommandCenter: () => void;
   closeMenus: () => void;
+  setSnapPreview: (preview: string | null) => void;
   updateSettings: (settings: Partial<SystemSettings>) => void;
 }
 
@@ -143,6 +147,8 @@ export const useStore = create<DesktopState>()(
       actionCenterOpen: false,
       widgetsOpen: false,
       taskViewOpen: false,
+      commandCenterOpen: false,
+      snapPreview: null,
       settings: {
         theme: 'dark',
         wallpaper: 'https://images.unsplash.com/photo-1707343843437-caacff5cfa74?q=80&w=2940&auto=format&fit=crop',
@@ -245,6 +251,7 @@ export const useStore = create<DesktopState>()(
             actionCenterOpen: false,
             widgetsOpen: false,
             taskViewOpen: false,
+            commandCenterOpen: false,
           };
         });
       },
@@ -270,6 +277,7 @@ export const useStore = create<DesktopState>()(
           startMenuOpen: !state.startMenuOpen,
           actionCenterOpen: false,
           widgetsOpen: false,
+          commandCenterOpen: false,
         }));
       },
       
@@ -278,6 +286,7 @@ export const useStore = create<DesktopState>()(
           actionCenterOpen: !state.actionCenterOpen,
           startMenuOpen: false,
           widgetsOpen: false,
+          commandCenterOpen: false,
         }));
       },
 
@@ -287,6 +296,7 @@ export const useStore = create<DesktopState>()(
           startMenuOpen: false,
           actionCenterOpen: false,
           taskViewOpen: false,
+          commandCenterOpen: false,
         }));
       },
 
@@ -296,11 +306,26 @@ export const useStore = create<DesktopState>()(
           startMenuOpen: false,
           actionCenterOpen: false,
           widgetsOpen: false,
+          commandCenterOpen: false,
         }));
       },
       
+      toggleCommandCenter: () => {
+        set((state) => ({
+          commandCenterOpen: !state.commandCenterOpen,
+          startMenuOpen: false,
+          actionCenterOpen: false,
+          widgetsOpen: false,
+          taskViewOpen: false,
+        }));
+      },
+
       closeMenus: () => {
-        set({ startMenuOpen: false, actionCenterOpen: false, widgetsOpen: false, taskViewOpen: false });
+        set({ startMenuOpen: false, actionCenterOpen: false, widgetsOpen: false, taskViewOpen: false, commandCenterOpen: false });
+      },
+
+      setSnapPreview: (preview) => {
+        set({ snapPreview: preview });
       },
 
       updateSettings: (newSettings) => {

@@ -98,6 +98,7 @@ import {
   Sun,
   ChevronDown,
   MessageSquare,
+  Clipboard,
 } from 'lucide-react';
 
 export const Icons = {
@@ -215,6 +216,7 @@ export const Icons = {
   Sun: Sun,
   ChevronDown: ChevronDown,
   MessageSquare: MessageSquare,
+  Clipboard: Clipboard,
 } as const;
 
 export type IconName = keyof typeof Icons;

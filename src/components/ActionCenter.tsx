@@ -16,6 +16,7 @@ export const ActionCenter: React.FC = () => {
     { id: 'bt', name: 'Bluetooth', icon: 'Bluetooth', active: false, color: 'bg-blue-500 text-white', inactive: 'bg-black/5 dark:bg-white/10' },
     { id: 'theme', name: settings.theme === 'dark' ? 'Dark Mode' : 'Light Mode', icon: settings.theme === 'dark' ? 'Moon' : 'Sun', active: settings.theme === 'dark', color: 'bg-blue-500 text-white', inactive: 'bg-black/5 dark:bg-white/10', action: () => updateSettings({ theme: settings.theme === 'dark' ? 'light' : 'dark' }) },
     { id: 'batt', name: 'Battery saver', icon: 'Battery', active: false, color: 'bg-green-500 text-white', inactive: 'bg-black/5 dark:bg-white/10' },
+    { id: 'focus', name: 'Focus Session', icon: 'Moon', active: false, color: 'bg-purple-500 text-white', inactive: 'bg-black/5 dark:bg-white/10', action: () => { /* triggers focus mode */ } },
   ];
 
   return (
