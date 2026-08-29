@@ -106,6 +106,33 @@ export const SettingsApp: React.FC<{ windowId: string }> = () => {
             ))}
           </div>
         </div>
+
+        {/* Taskbar Style */}
+        <div className="mt-8 p-6 bg-white dark:bg-white/5 rounded-xl border border-gray-200 dark:border-white/10 shadow-sm">
+          <h4 className="text-sm font-semibold mb-4">Taskbar Style</h4>
+          <div className="flex gap-4">
+            <button 
+              onClick={() => updateSettings({ taskbarStyle: 'full' })}
+              className={cn(
+                "flex-1 flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all",
+                (!settings.taskbarStyle || settings.taskbarStyle === 'full') ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20" : "border-gray-200 dark:border-white/10 hover:border-blue-300"
+              )}
+            >
+              <div className="w-3/4 h-2 bg-gray-400 dark:bg-gray-500 rounded-full mb-1"></div>
+              <span className="font-medium">Full Width (Classic)</span>
+            </button>
+            <button 
+              onClick={() => updateSettings({ taskbarStyle: 'dock' })}
+              className={cn(
+                "flex-1 flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all",
+                settings.taskbarStyle === 'dock' ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20" : "border-gray-200 dark:border-white/10 hover:border-blue-300"
+              )}
+            >
+              <div className="w-1/2 h-2 bg-gray-400 dark:bg-gray-500 rounded-full mb-1"></div>
+              <span className="font-medium">Floating Dock</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

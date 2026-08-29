@@ -6,7 +6,7 @@ import { Icon } from './ui/Icon';
 import { motion, AnimatePresence } from 'motion/react';
 
 export const Taskbar: React.FC = () => {
-  const { windows, openApp, toggleStartMenu, startMenuOpen, actionCenterOpen, toggleActionCenter, widgetsOpen, toggleWidgets, focusWindow, toggleTaskView } = useStore();
+  const { windows, openApp, toggleStartMenu, startMenuOpen, actionCenterOpen, toggleActionCenter, widgetsOpen, toggleWidgets, focusWindow, toggleTaskView, settings } = useStore();
   const [time, setTime] = useState(new Date());
   const [hoveredAppId, setHoveredAppId] = useState<string | null>(null);
   let hoverTimeout: any;
@@ -23,30 +23,38 @@ export const Taskbar: React.FC = () => {
   const allTaskbarAppIds = Array.from(new Set([...pinnedAppIds, ...openAppIds]));
   const allTaskbarApps = allTaskbarAppIds.map(id => APPS.find(a => a.id === id)!).filter(Boolean);
 
-  return (
-    <div 
-      className="absolute bottom-4 left-1/2 -translate-x-1/2 h-14 bg-white/70 dark:bg-[#1a1a1a]/80 backdrop-blur-3xl border border-white/20 dark:border-white/5 flex items-center justify-between px-2 z-[90] rounded-2xl shadow-2xl transition-all duration-300"
-      onClick={(e) => e.stopPropagation()}
-    >
-      {/* Left items - Widgets */}
-      <div className="flex items-center h-full mr-4">
-        <button 
-          onClick={toggleWidgets}
-          className={cn(
-            "h-full px-2 flex items-center gap-2 transition-colors rounded-md group text-sm text-gray-800 dark:text-gray-200",
-            widgetsOpen ? "bg-white/60 dark:bg-white/20" : "hover:bg-white/40 dark:hover:bg-white/10"
-          )}
-        >
-          <Icon name="Cloud" size={20} className="text-blue-500" />
-          <div className="flex flex-col items-start leading-none">
-            <span className="font-semibold text-xs">72°</span>
-            <span className="text-[10px] text-gray-500">Sunny</span>
-          </div>
-        </button>
-      </div>
+  const isDock = settings.taskbarStyle === 'dock';
 
-      {/* Center items - Apps */}
-      <div className="flex items-center justify-center gap-1 h-full flex-1">
+  return (
+    <>
+      <div 
+        className={cn(
+          "absolute bottom-4 left-1/2 -translate-x-1/2 h-14 bg-white/70 dark:bg-[#1a1a1a]/80 backdrop-blur-3xl border border-white/20 dark:border-white/5 flex items-center justify-between px-2 z-[90] rounded-2xl shadow-2xl transition-all duration-300",
+          isDock ? "w-auto min-w-fit px-3" : "w-[95%] max-w-7xl"
+        )}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Left items - Widgets */}
+        {!isDock && (
+        <div className="flex items-center h-full mr-4">
+          <button 
+            onClick={toggleWidgets}
+            className={cn(
+              "h-full px-2 flex items-center gap-2 transition-colors rounded-md group text-sm text-gray-800 dark:text-gray-200",
+              widgetsOpen ? "bg-white/60 dark:bg-white/20" : "hover:bg-white/40 dark:hover:bg-white/10"
+            )}
+          >
+            <Icon name="Cloud" size={20} className="text-blue-500" />
+            <div className="flex flex-col items-start leading-none">
+              <span className="font-semibold text-xs">72°</span>
+              <span className="text-[10px] text-gray-500">Sunny</span>
+            </div>
+          </button>
+        </div>
+        )}
+
+        {/* Center items - Apps */}
+        <div className={cn("flex items-center justify-center gap-1 h-full", isDock ? "" : "flex-1")}>
         <button 
           onClick={toggleStartMenu}
           className={cn(
@@ -151,30 +159,77 @@ export const Taskbar: React.FC = () => {
         })}
       </div>
 
-      {/* Right items - System Tray */}
-      <div className="flex items-center justify-end h-full gap-1 pl-2">
-        <button className="h-full px-2 flex items-center justify-center hover:bg-white/40 dark:hover:bg-white/10 transition-colors rounded-md text-gray-800 dark:text-gray-200">
-          <Icon name="ChevronUp" size={16} />
-        </button>
-        
-        <div 
-          onClick={toggleActionCenter}
-          className={cn(
-            "h-full px-2 flex items-center gap-3 transition-colors rounded-md cursor-pointer text-gray-800 dark:text-gray-200",
-            actionCenterOpen ? "bg-white/60 dark:bg-white/20" : "hover:bg-white/40 dark:hover:bg-white/10"
-          )}
-        >
-          <Icon name="Wifi" size={16} />
-          <Icon name="Volume2" size={16} />
-          <Icon name="Battery" size={16} />
-        </div>
+        {!isDock && (
+        <div className="flex items-center justify-end h-full gap-1 pl-2">
+          <button className="h-full px-2 flex items-center justify-center hover:bg-white/40 dark:hover:bg-white/10 transition-colors rounded-md text-gray-800 dark:text-gray-200">
+            <Icon name="ChevronUp" size={16} />
+          </button>
+          
+          <div 
+            onClick={toggleActionCenter}
+            className={cn(
+              "h-full px-2 flex items-center gap-3 transition-colors rounded-md cursor-pointer text-gray-800 dark:text-gray-200",
+              actionCenterOpen ? "bg-white/60 dark:bg-white/20" : "hover:bg-white/40 dark:hover:bg-white/10"
+            )}
+          >
+            <Icon name="Wifi" size={16} />
+            <Icon name="Volume2" size={16} />
+            <Icon name="Battery" size={16} />
+          </div>
 
-        <div className="h-full px-2 flex flex-col justify-center items-end hover:bg-white/40 dark:hover:bg-white/10 transition-colors rounded-md cursor-pointer text-[11px] font-medium text-gray-800 dark:text-gray-200 text-right select-none leading-tight">
-          <span>{format(time, 'h:mm a')}</span>
-          <span>{format(time, 'M/d/yyyy')}</span>
+          <div className="h-full px-2 flex flex-col justify-center items-end hover:bg-white/40 dark:hover:bg-white/10 transition-colors rounded-md cursor-pointer text-[11px] font-medium text-gray-800 dark:text-gray-200 text-right select-none leading-tight">
+            <span>{format(time, 'h:mm a')}</span>
+            <span>{format(time, 'M/d/yyyy')}</span>
+          </div>
         </div>
+        )}
       </div>
-    </div>
+
+      {isDock && (
+        <>
+          {/* Floating Left items - Widgets */}
+          <div className="absolute bottom-4 left-4 h-14 bg-white/70 dark:bg-[#1a1a1a]/80 backdrop-blur-3xl border border-white/20 dark:border-white/5 rounded-2xl shadow-2xl px-2 z-[90] flex items-center">
+            <button 
+              onClick={toggleWidgets}
+              className={cn(
+                "h-full px-2 flex items-center gap-2 transition-colors rounded-md group text-sm text-gray-800 dark:text-gray-200",
+                widgetsOpen ? "bg-white/60 dark:bg-white/20" : "hover:bg-white/40 dark:hover:bg-white/10"
+              )}
+            >
+              <Icon name="Cloud" size={20} className="text-blue-500" />
+              <div className="flex flex-col items-start leading-none">
+                <span className="font-semibold text-xs">72°</span>
+                <span className="text-[10px] text-gray-500">Sunny</span>
+              </div>
+            </button>
+          </div>
+
+          {/* Floating Right items - System Tray */}
+          <div className="absolute bottom-4 right-4 h-14 bg-white/70 dark:bg-[#1a1a1a]/80 backdrop-blur-3xl border border-white/20 dark:border-white/5 rounded-2xl shadow-2xl px-2 z-[90] flex items-center gap-1">
+            <button className="h-full px-2 flex items-center justify-center hover:bg-white/40 dark:hover:bg-white/10 transition-colors rounded-md text-gray-800 dark:text-gray-200">
+              <Icon name="ChevronUp" size={16} />
+            </button>
+            
+            <div 
+              onClick={toggleActionCenter}
+              className={cn(
+                "h-full px-2 flex items-center gap-3 transition-colors rounded-md cursor-pointer text-gray-800 dark:text-gray-200",
+                actionCenterOpen ? "bg-white/60 dark:bg-white/20" : "hover:bg-white/40 dark:hover:bg-white/10"
+              )}
+            >
+              <Icon name="Wifi" size={16} />
+              <Icon name="Volume2" size={16} />
+              <Icon name="Battery" size={16} />
+            </div>
+
+            <div className="h-full px-2 flex flex-col justify-center items-end hover:bg-white/40 dark:hover:bg-white/10 transition-colors rounded-md cursor-pointer text-[11px] font-medium text-gray-800 dark:text-gray-200 text-right select-none leading-tight">
+              <span>{format(time, 'h:mm a')}</span>
+              <span>{format(time, 'M/d/yyyy')}</span>
+            </div>
+          </div>
+        </>
+      )}
+    </>
   );
 };
 ;

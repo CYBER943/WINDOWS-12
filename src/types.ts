@@ -27,6 +27,7 @@ export interface SystemSettings {
   theme: 'light' | 'dark';
   wallpaper: string;
   accentColor?: string;
+  taskbarStyle?: 'full' | 'dock';
   isLocked: boolean;
 }
 
