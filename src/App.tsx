@@ -8,6 +8,7 @@ import { TaskView } from './components/TaskView';
 import { LockScreen } from './components/LockScreen';
 import { CommandCenter } from './components/CommandCenter';
 import { ClipboardManager } from './components/ClipboardManager';
+import { AltTabSwitcher } from './components/AltTabSwitcher';
 import { useStore } from './store/useStore';
 
 export default function App() {
@@ -51,6 +52,7 @@ export default function App() {
       <WidgetsPanel />
       <CommandCenter />
       <ClipboardManager />
+      <AltTabSwitcher />
       <Taskbar />
     </div>
   );

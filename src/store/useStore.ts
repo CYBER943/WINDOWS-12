@@ -111,6 +111,10 @@ export const APPS: AppMetadata[] = [
 
 interface DesktopState {
   windows: WindowState[];
+  desktops: import('../types').VirtualDesktop[];
+  activeDesktopId: string;
+  fileSystem: import('../types').FileSystemItem[];
+  notifications: import('../types').AppNotification[];
   startMenuOpen: boolean;
   actionCenterOpen: boolean;
   widgetsOpen: boolean;
@@ -120,6 +124,17 @@ interface DesktopState {
   settings: SystemSettings;
   
   // Actions
+  addNotification: (notification: Omit<import('../types').AppNotification, 'id' | 'timestamp' | 'read'>) => void;
+  removeNotification: (id: string) => void;
+  clearAllNotifications: () => void;
+  markAllNotificationsRead: () => void;
+  addDesktop: () => void;
+  switchDesktop: (id: string) => void;
+  closeDesktop: (id: string) => void;
+  createFile: (file: Omit<import('../types').FileSystemItem, 'id' | 'createdAt' | 'updatedAt'>) => void;
+  deleteFile: (id: string) => void;
+  updateFile: (id: string, updates: Partial<import('../types').FileSystemItem>) => void;
+  moveFile: (id: string, newParentId: string) => void;
   openApp: (appId: string) => void;
   closeWindow: (id: string) => void;
   minimizeWindow: (id: string) => void;
@@ -143,6 +158,60 @@ export const useStore = create<DesktopState>()(
   persist(
     (set, get) => ({
       windows: [],
+      desktops: [{ id: 'desktop-1', name: 'Desktop 1' }],
+      activeDesktopId: 'desktop-1',
+      fileSystem: [
+        { id: 'desktop', name: 'Desktop', type: 'folder', parentId: 'root', createdAt: Date.now(), updatedAt: Date.now() },
+        { id: 'documents', name: 'Documents', type: 'folder', parentId: 'root', createdAt: Date.now(), updatedAt: Date.now() },
+        { id: 'downloads', name: 'Downloads', type: 'folder', parentId: 'root', createdAt: Date.now(), updatedAt: Date.now() },
+        { id: 'pictures', name: 'Pictures', type: 'folder', parentId: 'root', createdAt: Date.now(), updatedAt: Date.now() },
+        { id: 'recycle-bin', name: 'Recycle Bin', type: 'folder', parentId: 'root', createdAt: Date.now(), updatedAt: Date.now() },
+        
+        // Initial Desktop Shortcuts
+        { id: 'shortcut-pc', name: 'This PC', type: 'shortcut', appId: 'explorer', icon: 'Desktop', parentId: 'desktop', createdAt: Date.now(), updatedAt: Date.now() },
+        { id: 'shortcut-settings', name: 'Settings', type: 'shortcut', appId: 'settings', icon: 'Settings', parentId: 'desktop', createdAt: Date.now(), updatedAt: Date.now() },
+        { id: 'shortcut-edge', name: 'Microsoft Edge', type: 'shortcut', appId: 'edge', icon: 'Browser', parentId: 'desktop', createdAt: Date.now(), updatedAt: Date.now() },
+        
+        // Inside Documents
+        { id: 'doc-1', name: 'Work', type: 'folder', parentId: 'documents', createdAt: Date.now(), updatedAt: Date.now() },
+        { id: 'doc-2', name: 'Personal', type: 'folder', parentId: 'documents', createdAt: Date.now(), updatedAt: Date.now() },
+        { id: 'file-doc-1', name: 'Q3_Report.docx', type: 'file', parentId: 'documents', icon: 'FileText', createdAt: Date.now(), updatedAt: Date.now() },
+        
+        // Inside Pictures
+        { id: 'pic-1', name: 'Wallpapers', type: 'folder', parentId: 'pictures', createdAt: Date.now(), updatedAt: Date.now() },
+        { id: 'file-pic-1', name: 'logo.png', type: 'file', parentId: 'pictures', icon: 'Image', createdAt: Date.now(), updatedAt: Date.now() },
+        
+        // Inside Downloads
+        { id: 'file-dl-1', name: 'installer.exe', type: 'file', parentId: 'downloads', icon: 'Download', createdAt: Date.now(), updatedAt: Date.now() },
+      ],
+      notifications: [
+        {
+          id: 'notif-1',
+          appId: 'system',
+          title: 'Windows Update',
+          message: 'A new feature update (26H2) is ready to install.',
+          timestamp: Date.now() - 3600000,
+          read: false,
+          actionButton: { label: 'Restart now', actionId: 'update' }
+        },
+        {
+          id: 'notif-2',
+          appId: 'defender',
+          title: 'Security Scan Complete',
+          message: 'No threats were found on your system.',
+          timestamp: Date.now() - 7200000,
+          read: true
+        },
+        {
+          id: 'notif-3',
+          appId: 'mail',
+          title: 'Sarah Jenkins',
+          message: 'Meeting notes from the Q3 planning session are attached.',
+          timestamp: Date.now() - 1500000,
+          read: false,
+          actionButton: { label: 'Reply', actionId: 'reply-mail' }
+        }
+      ],
       startMenuOpen: false,
       actionCenterOpen: false,
       widgetsOpen: false,
@@ -153,16 +222,88 @@ export const useStore = create<DesktopState>()(
         theme: 'dark',
         wallpaper: 'https://images.unsplash.com/photo-1707343843437-caacff5cfa74?q=80&w=2940&auto=format&fit=crop',
         isLocked: true,
+        focusMode: false,
+      },
+
+      addNotification: (notif) => set(state => {
+        if (state.settings.focusMode) return state; // Suppress notifications in focus mode
+        return {
+          notifications: [
+            { ...notif, id: `notif-${Date.now()}`, timestamp: Date.now(), read: false },
+            ...state.notifications
+          ]
+        };
+      }),
+      
+      removeNotification: (id) => set(state => ({
+        notifications: state.notifications.filter(n => n.id !== id)
+      })),
+      
+      clearAllNotifications: () => set({ notifications: [] }),
+      
+      markAllNotificationsRead: () => set(state => ({
+        notifications: state.notifications.map(n => ({ ...n, read: true }))
+      })),
+
+      createFile: (file) => set(state => ({
+        fileSystem: [...state.fileSystem, { ...file, id: `file-${Date.now()}`, createdAt: Date.now(), updatedAt: Date.now() }]
+      })),
+      
+      deleteFile: (id) => set(state => ({
+        fileSystem: state.fileSystem.filter(f => f.id !== id && f.parentId !== id) // Also deletes immediate children if folder
+      })),
+      
+      updateFile: (id, updates) => set(state => ({
+        fileSystem: state.fileSystem.map(f => f.id === id ? { ...f, ...updates, updatedAt: Date.now() } : f)
+      })),
+      
+      moveFile: (id, newParentId) => set(state => ({
+        fileSystem: state.fileSystem.map(f => f.id === id ? { ...f, parentId: newParentId, updatedAt: Date.now() } : f)
+      })),
+
+      addDesktop: () => {
+        set((state) => {
+          const newId = `desktop-${Date.now()}`;
+          return {
+            desktops: [...state.desktops, { id: newId, name: `Desktop ${state.desktops.length + 1}` }],
+            activeDesktopId: newId,
+          };
+        });
+      },
+
+      switchDesktop: (id: string) => {
+        set({ activeDesktopId: id, taskViewOpen: false });
+      },
+
+      closeDesktop: (id: string) => {
+        set((state) => {
+          if (state.desktops.length <= 1) return state; // Don't close last desktop
+          
+          const filteredDesktops = state.desktops.filter(d => d.id !== id);
+          
+          // Move windows from closing desktop to the first available desktop
+          const targetDesktopId = filteredDesktops[0].id;
+          const updatedWindows = state.windows.map(w => 
+            w.desktopId === id ? { ...w, desktopId: targetDesktopId } : w
+          );
+          
+          return {
+            desktops: filteredDesktops,
+            windows: updatedWindows,
+            activeDesktopId: state.activeDesktopId === id ? targetDesktopId : state.activeDesktopId
+          };
+        });
       },
 
       openApp: (appId: string) => {
-        const { windows } = get();
+        const { windows, activeDesktopId } = get();
         const app = APPS.find((a) => a.id === appId);
         if (!app) return;
 
         const existingWindow = windows.find((w) => w.appId === appId);
         if (existingWindow) {
           set((state) => ({
+            activeDesktopId: existingWindow.desktopId, // switch to desktop where app is open
             windows: state.windows.map((w) =>
               w.id === existingWindow.id
                 ? { ...w, isMinimized: false, isFocused: true, zIndex: ++nextZIndex }
@@ -187,6 +328,7 @@ export const useStore = create<DesktopState>()(
           width: app.defaultWidth || 600,
           height: app.defaultHeight || 400,
           zIndex: ++nextZIndex,
+          desktopId: activeDesktopId,
         };
 
         set((state) => ({

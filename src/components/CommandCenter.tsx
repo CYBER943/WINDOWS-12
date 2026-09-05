@@ -28,8 +28,8 @@ export const CommandCenter: React.FC = () => {
     // Simple math
     else if (/^[0-9+\-*/().\s]+$/.test(q)) {
       try {
-        // eslint-disable-next-line no-eval
-        const result = eval(q);
+        // eslint-disable-next-line no-new-func
+        const result = new Function(`return ${q}`)();
         return `Result: ${result}`;
       } catch (e) {
         // ignore
@@ -48,7 +48,7 @@ export const CommandCenter: React.FC = () => {
       if (cmdResult) {
         items.push({
           id: 'calc-result',
-          type: 'Calculation',
+          type: 'Calculations',
           title: cmdResult,
           subtitle: 'Press Enter to copy',
           icon: 'Calculator',
@@ -58,19 +58,27 @@ export const CommandCenter: React.FC = () => {
           }
         });
       }
-      if (lowerQuery === 'dark mode' || lowerQuery === 'light mode') {
-        items.push({
-          id: 'theme-toggle',
-          type: 'System Setting',
-          title: `Switch to ${lowerQuery === 'dark mode' ? 'Dark' : 'Light'} Mode`,
-          subtitle: 'Apply theme change',
-          icon: lowerQuery === 'dark mode' ? 'Moon' : 'Sun',
-          action: () => {
-            executeCommand(lowerQuery);
-            closeMenus();
-          }
-        });
-      }
+      
+      // Settings search mapping
+      const settingsMap: Record<string, { title: string; subtitle: string; icon: string; action: () => void }> = {
+        'dark mode': { title: 'Turn on Dark Mode', subtitle: 'System Settings > Personalization', icon: 'Moon', action: () => { updateSettings({ theme: 'dark' }); closeMenus(); } },
+        'light mode': { title: 'Turn on Light Mode', subtitle: 'System Settings > Personalization', icon: 'Sun', action: () => { updateSettings({ theme: 'light' }); closeMenus(); } },
+        'taskbar': { title: 'Taskbar Settings', subtitle: 'System Settings > Personalization', icon: 'LayoutDashboard', action: () => { openApp('settings'); closeMenus(); } },
+        'dock': { title: 'Enable Floating Dock', subtitle: 'System Settings > Personalization', icon: 'LayoutDashboard', action: () => { updateSettings({ taskbarStyle: 'dock' }); closeMenus(); } },
+        'wallpaper': { title: 'Change Wallpaper', subtitle: 'System Settings > Personalization', icon: 'Image', action: () => { openApp('settings'); closeMenus(); } },
+        'wifi': { title: 'Network & Internet', subtitle: 'System Settings > Network', icon: 'Wifi', action: () => { openApp('settings'); closeMenus(); } },
+        'bluetooth': { title: 'Bluetooth & Devices', subtitle: 'System Settings > Bluetooth', icon: 'Bluetooth', action: () => { openApp('settings'); closeMenus(); } },
+      };
+
+      Object.entries(settingsMap).forEach(([key, setting]) => {
+        if (key.includes(lowerQuery) || lowerQuery.includes(key)) {
+          items.push({
+            id: `setting-${key}`,
+            type: 'Settings',
+            ...setting
+          });
+        }
+      });
     }
 
     // 2. Apps
@@ -78,7 +86,7 @@ export const CommandCenter: React.FC = () => {
       if (!query || app.name.toLowerCase().includes(lowerQuery)) {
         items.push({
           id: `app-${app.id}`,
-          type: 'Application',
+          type: 'Applications',
           title: app.name,
           subtitle: 'System App',
           icon: app.icon,
@@ -90,19 +98,49 @@ export const CommandCenter: React.FC = () => {
       }
     });
 
-    // 3. Mock Files (if searching)
-    if (query && 'presentation files projects'.includes(lowerQuery.split(' ')[0])) {
-       items.push({
-          id: 'file-1',
-          type: 'File',
-          title: 'Q3_Project_Presentation.pptx',
-          subtitle: 'Documents/Work',
-          icon: 'File',
+    // 3. Mock Files
+    const mockFiles = [
+      { name: 'Q3_Project_Presentation.pptx', folder: 'Documents/Work', icon: 'FileText' },
+      { name: 'Financial_Report_2026.xlsx', folder: 'Documents/Finance', icon: 'FileSpreadsheet' },
+      { name: 'Vacation_Ideas.docx', folder: 'Documents/Personal', icon: 'FileText' },
+      { name: 'logo_concept_v2.png', folder: 'Pictures/Design', icon: 'Image' },
+      { name: 'Windows_12_Blueprint.pdf', folder: 'Downloads', icon: 'File' },
+      { name: 'index.html', folder: 'Projects/WebDesktop', icon: 'Code' },
+    ];
+
+    if (query) {
+      mockFiles.forEach(file => {
+        if (file.name.toLowerCase().includes(lowerQuery) || file.folder.toLowerCase().includes(lowerQuery)) {
+          items.push({
+            id: `file-${file.name}`,
+            type: 'Files',
+            title: file.name,
+            subtitle: file.folder,
+            icon: file.icon,
+            action: () => {
+              openApp('explorer');
+              closeMenus();
+            }
+          });
+        }
+      });
+    }
+
+    // If empty query, show "Recent items" mock
+    if (!query) {
+      mockFiles.slice(0, 3).forEach(file => {
+        items.push({
+          id: `recent-${file.name}`,
+          type: 'Recent Items',
+          title: file.name,
+          subtitle: file.folder,
+          icon: file.icon,
           action: () => {
-             openApp('explorer');
-             closeMenus();
+            openApp('explorer');
+            closeMenus();
           }
-       });
+        });
+      });
     }
 
     return items;
@@ -175,42 +213,52 @@ export const CommandCenter: React.FC = () => {
                   <p className="text-sm mt-1">Try searching for apps, settings, or basic math like "25 * 48"</p>
                 </div>
               ) : (
-                <div className="space-y-1">
-                  {items.map((item, index) => (
-                    <button
-                      key={item.id}
-                      className={cn(
-                        "w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-colors text-left",
-                        index === selectedIndex
-                          ? "bg-purple-500/10 dark:bg-white/10"
-                          : "hover:bg-black/5 dark:hover:bg-white/5"
-                      )}
-                      onMouseEnter={() => setSelectedIndex(index)}
-                      onClick={item.action}
-                    >
-                      <div className={cn(
-                        "w-10 h-10 rounded-lg flex items-center justify-center shadow-sm",
-                        index === selectedIndex ? "bg-purple-500 text-white" : "bg-white dark:bg-black/20 text-gray-700 dark:text-gray-300"
-                      )}>
-                        <Icon name={item.icon as any} size={20} />
+                <div className="space-y-4">
+                  {Array.from(new Set(items.map(i => i.type))).map(type => (
+                    <div key={type} className="space-y-1">
+                      <div className="px-4 py-1 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                        {type}
                       </div>
-                      <div className="flex-1 overflow-hidden">
-                        <div className={cn(
-                          "font-medium text-sm truncate",
-                          index === selectedIndex ? "text-purple-600 dark:text-white" : "text-gray-900 dark:text-gray-100"
-                        )}>
-                          {item.title}
-                        </div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
-                          {item.subtitle}
-                        </div>
-                      </div>
-                      {index === selectedIndex && (
-                        <div className="text-xs text-gray-500 flex items-center gap-1">
-                          <span className="px-1.5 py-0.5 rounded bg-black/5 dark:bg-white/10">↵</span>
-                        </div>
-                      )}
-                    </button>
+                      {items.filter(i => i.type === type).map((item) => {
+                        const globalIndex = items.findIndex(i => i.id === item.id);
+                        return (
+                          <button
+                            key={item.id}
+                            className={cn(
+                              "w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-colors text-left",
+                              globalIndex === selectedIndex
+                                ? "bg-purple-500/10 dark:bg-white/10"
+                                : "hover:bg-black/5 dark:hover:bg-white/5"
+                            )}
+                            onMouseEnter={() => setSelectedIndex(globalIndex)}
+                            onClick={item.action}
+                          >
+                            <div className={cn(
+                              "w-10 h-10 rounded-lg flex items-center justify-center shadow-sm",
+                              globalIndex === selectedIndex ? "bg-purple-500 text-white" : "bg-white dark:bg-black/20 text-gray-700 dark:text-gray-300"
+                            )}>
+                              <Icon name={item.icon as any} size={20} />
+                            </div>
+                            <div className="flex-1 overflow-hidden">
+                              <div className={cn(
+                                "font-medium text-sm truncate",
+                                globalIndex === selectedIndex ? "text-purple-600 dark:text-white" : "text-gray-900 dark:text-gray-100"
+                              )}>
+                                {item.title}
+                              </div>
+                              <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                                {item.subtitle}
+                              </div>
+                            </div>
+                            {globalIndex === selectedIndex && (
+                              <div className="text-xs text-gray-500 flex items-center gap-1">
+                                <span className="px-1.5 py-0.5 rounded bg-black/5 dark:bg-white/10">↵</span>
+                              </div>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
                   ))}
                 </div>
               )}

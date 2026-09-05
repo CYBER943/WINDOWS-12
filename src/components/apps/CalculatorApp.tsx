@@ -14,8 +14,9 @@ export const CalculatorApp: React.FC<{ windowId: string }> = () => {
     if (val === '=') {
       try {
         // Safe evaluation for simple calc
-        // eslint-disable-next-line no-eval
-        const result = eval(equation + display);
+        const expr = equation + display;
+        // eslint-disable-next-line no-new-func
+        const result = new Function(`return ${expr}`)();
         setDisplay(String(result));
         setEquation('');
       } catch (e) {

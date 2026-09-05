@@ -5,9 +5,11 @@ import { Icon } from './ui/Icon';
 import { cn } from '../lib/utils';
 
 export const TaskView: React.FC = () => {
-  const { taskViewOpen, windows, focusWindow, closeWindow, toggleTaskView } = useStore();
+  const { taskViewOpen, windows, desktops, activeDesktopId, addDesktop, switchDesktop, closeDesktop, focusWindow, closeWindow, toggleTaskView } = useStore();
 
   if (!taskViewOpen) return null;
+
+  const currentDesktopWindows = windows.filter(w => w.desktopId === activeDesktopId);
 
   return (
     <motion.div
@@ -19,16 +21,34 @@ export const TaskView: React.FC = () => {
       onClick={toggleTaskView}
     >
       <div className="flex justify-center gap-8 mb-12" onClick={(e) => e.stopPropagation()}>
-        <div className="flex flex-col items-center gap-2 group cursor-pointer">
-          <div className="w-48 h-32 rounded-xl bg-white/20 border-2 border-blue-500 overflow-hidden relative shadow-lg">
-            <img src={useStore.getState().settings.wallpaper} className="w-full h-full object-cover opacity-80" alt="Desktop 1" />
-            <div className="absolute inset-0 flex items-center justify-center font-medium text-white shadow-black drop-shadow-md">
-              Desktop 1
+        {desktops.map((desktop) => (
+          <div key={desktop.id} className="flex flex-col items-center gap-2 group cursor-pointer relative" onClick={() => switchDesktop(desktop.id)}>
+            <div className={cn(
+              "w-48 h-32 rounded-xl bg-white/20 border-2 overflow-hidden relative shadow-lg transition-all",
+              activeDesktopId === desktop.id ? "border-blue-500" : "border-white/10 hover:border-white/30"
+            )}>
+              <img src={useStore.getState().settings.wallpaper} className="w-full h-full object-cover opacity-80" alt={desktop.name} />
+              <div className="absolute inset-0 flex items-center justify-center font-medium text-white shadow-black drop-shadow-md">
+                {desktop.name}
+              </div>
             </div>
+            <div className={cn("h-1 w-8 rounded-full transition-colors", activeDesktopId === desktop.id ? "bg-blue-500" : "bg-transparent")} />
+            
+            {desktops.length > 1 && (
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  closeDesktop(desktop.id);
+                }}
+                className="absolute -top-3 -right-3 w-6 h-6 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                <Icon name="X" size={14} />
+              </button>
+            )}
           </div>
-          <div className="h-1 w-8 bg-blue-500 rounded-full" />
-        </div>
-        <div className="flex flex-col items-center gap-2 group cursor-pointer">
+        ))}
+
+        <div className="flex flex-col items-center gap-2 group cursor-pointer" onClick={addDesktop}>
           <div className="w-48 h-32 rounded-xl bg-black/40 hover:bg-white/20 border border-white/20 transition-all flex items-center justify-center relative shadow-lg">
             <Icon name="Plus" size={32} className="text-white" />
           </div>
@@ -39,7 +59,7 @@ export const TaskView: React.FC = () => {
       <div className="flex-1 overflow-y-auto" onClick={(e) => e.stopPropagation()}>
         <div className="flex flex-wrap justify-center gap-8 items-start content-start">
           <AnimatePresence>
-            {windows.map((w) => {
+            {currentDesktopWindows.map((w) => {
               const app = APPS.find(a => a.id === w.appId);
               if (!app) return null;
               return (

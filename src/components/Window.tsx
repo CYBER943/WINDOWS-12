@@ -69,11 +69,35 @@ export const Window: React.FC<WindowProps> = ({ id }) => {
   const handleDragStart = () => setIsDragging(true);
 
   const handleDrag = (e: any, info: any) => {
+    // If dragging while snapped or maximized, restore previous size
+    if (windowState.isMaximized || windowState.isSnapped) {
+      if (windowState.isMaximized) maximizeWindow(id); // unmaximize
+      
+      if (windowState.previousBounds) {
+        // Adjust X to center on cursor somewhat, or keep it relative
+        updateWindowSize(id, windowState.previousBounds.width, windowState.previousBounds.height);
+        useStore.setState(state => ({
+          windows: state.windows.map(w => w.id === id ? { ...w, isSnapped: false } : w)
+        }));
+      }
+    }
+
     const threshold = 15;
     if (info.point.x < threshold) setSnapPreview('left');
     else if (info.point.x > window.innerWidth - threshold) setSnapPreview('right');
     else if (info.point.y < threshold) setSnapPreview('top');
     else setSnapPreview(null);
+  };
+
+  const savePreviousBounds = () => {
+    if (!windowState.isMaximized && !windowState.isSnapped) {
+      useStore.setState(state => ({
+        windows: state.windows.map(w => w.id === id ? { 
+          ...w, 
+          previousBounds: { x: w.x, y: w.y, width: w.width, height: w.height } 
+        } : w)
+      }));
+    }
   };
 
   const handleDragEnd = (e: any, info: any) => {
@@ -86,16 +110,19 @@ export const Window: React.FC<WindowProps> = ({ id }) => {
     const threshold = 15;
     if (info.point.x < threshold) {
       // Snap Left
+      savePreviousBounds();
       updateWindowPosition(id, 0, 0);
       updateWindowSize(id, window.innerWidth / 2, window.innerHeight - 48);
-      if (windowState.isMaximized) maximizeWindow(id);
+      useStore.setState(state => ({ windows: state.windows.map(w => w.id === id ? { ...w, isSnapped: true } : w) }));
     } else if (info.point.x > window.innerWidth - threshold) {
       // Snap Right
+      savePreviousBounds();
       updateWindowPosition(id, window.innerWidth / 2, 0);
       updateWindowSize(id, window.innerWidth / 2, window.innerHeight - 48);
-      if (windowState.isMaximized) maximizeWindow(id);
+      useStore.setState(state => ({ windows: state.windows.map(w => w.id === id ? { ...w, isSnapped: true } : w) }));
     } else if (info.point.y < threshold) {
       // Snap Top (Maximize)
+      savePreviousBounds();
       if (!windowState.isMaximized) maximizeWindow(id);
     } else {
       updateWindowPosition(id, newX, newY);

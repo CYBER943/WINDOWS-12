@@ -10,8 +10,9 @@ interface Message {
 }
 
 export const AssistantApp: React.FC<{ windowId: string }> = () => {
+  const { openApp, updateSettings, settings } = useStore();
   const [messages, setMessages] = useState<Message[]>([
-    { id: '1', sender: 'bot', text: 'Hi! I am Copilot+, powered by Agentic AI. I can search your Smart Recall timeline, adjust PC settings, or help with tasks across your apps. What can I do for you?' }
+    { id: '1', sender: 'bot', text: 'Hi! I am Windows Intelligence. I can adjust PC settings, open applications, or help with tasks. What can I do for you?' }
   ]);
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -24,6 +25,36 @@ export const AssistantApp: React.FC<{ windowId: string }> = () => {
     scrollToBottom();
   }, [messages]);
 
+  const parseCommand = (cmd: string) => {
+    const lowerCmd = cmd.toLowerCase().trim();
+    let actionResponse = null;
+
+    if (lowerCmd.includes('dark mode')) {
+      updateSettings({ theme: 'dark' });
+      actionResponse = 'Dark mode is now enabled.';
+    } else if (lowerCmd.includes('light mode')) {
+      updateSettings({ theme: 'light' });
+      actionResponse = 'Light mode is now enabled.';
+    } else if (lowerCmd.includes('open calculator') || lowerCmd === 'calculator' || lowerCmd === 'calc') {
+      openApp('calculator');
+      actionResponse = 'Opening Calculator...';
+    } else if (lowerCmd.includes('open settings') || lowerCmd === 'settings') {
+      openApp('settings');
+      actionResponse = 'Opening Settings...';
+    } else if (lowerCmd.includes('open explorer') || lowerCmd.includes('file explorer')) {
+      openApp('explorer');
+      actionResponse = 'Opening File Explorer...';
+    } else if (lowerCmd.includes('task manager')) {
+      openApp('taskmanager');
+      actionResponse = 'Opening Task Manager...';
+    } else if (lowerCmd.includes('timeline') || lowerCmd.includes('smart recall')) {
+      openApp('timeline');
+      actionResponse = 'Opening Smart Recall...';
+    }
+
+    return actionResponse;
+  };
+
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
@@ -32,15 +63,19 @@ export const AssistantApp: React.FC<{ windowId: string }> = () => {
     setMessages(prev => [...prev, userMsg]);
     setInput('');
 
-    // Mock response
+    // Mock API delay for local processing
     setTimeout(() => {
+      const actionResult = parseCommand(userMsg.text);
+      
       const botMsg: Message = { 
         id: (Date.now() + 1).toString(), 
         sender: 'bot', 
-        text: `I'm a concept assistant, so I can't actually do much yet, but I heard you say: "${userMsg.text}"` 
+        text: actionResult 
+          ? `Done. ${actionResult}` 
+          : `I am currently in local demo mode. I heard: "${userMsg.text}". (Try saying "turn on dark mode" or "open calculator")` 
       };
       setMessages(prev => [...prev, botMsg]);
-    }, 1000);
+    }, 800);
   };
 
   return (
@@ -52,12 +87,12 @@ export const AssistantApp: React.FC<{ windowId: string }> = () => {
             <Icon name="Assistant" size={24} />
           </div>
           <div>
-            <h2 className="font-semibold text-lg leading-tight">Copilot+</h2>
-            <p className="text-xs text-gray-500">Agentic AI & Smart Recall</p>
+            <h2 className="font-semibold text-lg leading-tight">Windows Intelligence</h2>
+            <p className="text-xs text-gray-500">Agentic AI & System Control</p>
           </div>
         </div>
         <button 
-          onClick={() => useStore.getState().openApp('timeline')}
+          onClick={() => openApp('timeline')}
           className="text-xs bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300 px-3 py-1.5 rounded-full font-semibold border border-purple-200 dark:border-purple-800 hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-colors"
         >
           Search Timeline

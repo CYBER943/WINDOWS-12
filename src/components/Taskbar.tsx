@@ -6,7 +6,7 @@ import { Icon } from './ui/Icon';
 import { motion, AnimatePresence } from 'motion/react';
 
 export const Taskbar: React.FC = () => {
-  const { windows, openApp, toggleStartMenu, startMenuOpen, actionCenterOpen, toggleActionCenter, widgetsOpen, toggleWidgets, focusWindow, toggleTaskView, settings } = useStore();
+  const { windows, activeDesktopId, openApp, toggleStartMenu, startMenuOpen, actionCenterOpen, toggleActionCenter, widgetsOpen, toggleWidgets, focusWindow, toggleTaskView, settings } = useStore();
   const [time, setTime] = useState(new Date());
   const [hoveredAppId, setHoveredAppId] = useState<string | null>(null);
   let hoverTimeout: any;
@@ -16,7 +16,8 @@ export const Taskbar: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const openAppIds = windows.map(w => w.appId);
+  const desktopWindows = windows.filter(w => w.desktopId === activeDesktopId);
+  const openAppIds = desktopWindows.map(w => w.appId);
   const openApps = Array.from(new Set(openAppIds)).map(id => APPS.find(a => a.id === id)!);
   
   const pinnedAppIds = ['edge', 'explorer', 'settings', 'terminal', 'paint', 'assistant'];
@@ -131,7 +132,7 @@ export const Taskbar: React.FC = () => {
 
               <button
                 onClick={() => {
-                  const w = windows.find(w => w.appId === app.id);
+                  const w = desktopWindows.find(w => w.appId === app.id);
                   if (w) focusWindow(w.id);
                   else openApp(app.id);
                 }}
@@ -177,8 +178,21 @@ export const Taskbar: React.FC = () => {
             <Icon name="Battery" size={16} />
           </div>
 
-          <div className="h-full px-2 flex flex-col justify-center items-end hover:bg-white/40 dark:hover:bg-white/10 transition-colors rounded-md cursor-pointer text-[11px] font-medium text-gray-800 dark:text-gray-200 text-right select-none leading-tight">
-            <span>{format(time, 'h:mm a')}</span>
+          <div 
+            onClick={toggleActionCenter}
+            className={cn(
+              "h-full px-2 flex flex-col justify-center items-end hover:bg-white/40 dark:hover:bg-white/10 transition-colors rounded-md cursor-pointer text-[11px] font-medium text-gray-800 dark:text-gray-200 text-right select-none leading-tight",
+              actionCenterOpen ? "bg-white/60 dark:bg-white/20" : ""
+            )}
+          >
+            <div className="flex items-center gap-1.5">
+              {useStore.getState().notifications.length > 0 ? (
+                <Icon name="BellRing" size={12} className="text-blue-500 animate-pulse" />
+              ) : (
+                <Icon name={useStore.getState().settings.focusMode ? 'Moon' : 'Bell'} size={12} className={useStore.getState().settings.focusMode ? 'text-purple-500' : ''} />
+              )}
+              <span>{format(time, 'h:mm a')}</span>
+            </div>
             <span>{format(time, 'M/d/yyyy')}</span>
           </div>
         </div>
@@ -222,8 +236,21 @@ export const Taskbar: React.FC = () => {
               <Icon name="Battery" size={16} />
             </div>
 
-            <div className="h-full px-2 flex flex-col justify-center items-end hover:bg-white/40 dark:hover:bg-white/10 transition-colors rounded-md cursor-pointer text-[11px] font-medium text-gray-800 dark:text-gray-200 text-right select-none leading-tight">
-              <span>{format(time, 'h:mm a')}</span>
+            <div 
+              onClick={toggleActionCenter}
+              className={cn(
+                "h-full px-2 flex flex-col justify-center items-end hover:bg-white/40 dark:hover:bg-white/10 transition-colors rounded-md cursor-pointer text-[11px] font-medium text-gray-800 dark:text-gray-200 text-right select-none leading-tight",
+                actionCenterOpen ? "bg-white/60 dark:bg-white/20" : ""
+              )}
+            >
+              <div className="flex items-center gap-1.5">
+                {useStore.getState().notifications.length > 0 ? (
+                  <Icon name="BellRing" size={12} className="text-blue-500 animate-pulse" />
+                ) : (
+                  <Icon name={useStore.getState().settings.focusMode ? 'Moon' : 'Bell'} size={12} className={useStore.getState().settings.focusMode ? 'text-purple-500' : ''} />
+                )}
+                <span>{format(time, 'h:mm a')}</span>
+              </div>
               <span>{format(time, 'M/d/yyyy')}</span>
             </div>
           </div>
